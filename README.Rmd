@@ -2,13 +2,13 @@
 title: "Re-identifying species and areas of interest to conserve global mammalian phylogenetic diversity"
 author: Github repository & scripts created by Marine Robuchon, with contributions of Boris Leroy & Sandrine Pavoine
 output: 
-  html_document: 
-    theme: united
-    toc: true
-    toc_float: false
-  # github_document:
+  # html_document: 
+  #   theme: united
   #   toc: true
-  #   toc_depth: 2
+  #   toc_float: false
+  github_document:
+    toc: true
+    toc_depth: 3
 ---
 
 ## 1. Description & organisation of the repository
