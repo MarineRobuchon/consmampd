@@ -37,3 +37,10 @@ vignettes/*.pdf
 
 # R Environment Variables
 .Renviron
+.Rproj.user
+
+# Specific to repository consmampd
+/requireddata/*
+/requiredoutputs/*
+*.Rproj
+
