@@ -207,6 +207,10 @@ nrow(tophedge_notprotected)/nrow(tophedge)*100
 tophedge_introduced <- tableS3[tableS3$introduced=="yes",]
 nlevels(factor(tophedge_introduced$species))/nrow(tophedge)*100
 
+# species introduced AND on the list of Union concern
+concern <- read.csv2(paste0(getwd(), "/data/animal_species_Union-concern.csv"))
+intersect(gsub("_", " ", tophedge_introduced$species), concern$Scientific.name) # no tophedge species is on the list of Union concern
+
 # species by realm
 nrow(tophedge[tophedge$Marine=="1",])/nrow(mammals[mammals$Marine=="1",]) # 22% of marine mammals are TOP HEDGE
 nrow(tophedge[tophedge$Terrestrial=="1",])/nrow(mammals[mammals$Terrestrial=="1",]) # 27% of terrestrial mammals are TOP HEDGE
@@ -232,6 +236,9 @@ nlevels(factor(topledge_introduced$species))/nrow(topledge)*100
 species_topledge_introduced <- unique(as.character(topledge_introduced$species)) # 34 species
 species_tophedge_introduced <- unique(as.character(tophedge_introduced$species)) # 31 species
 species_topledge_introduced[species_topledge_introduced %in% species_tophedge_introduced] # the 10 species species introduced that belong to both TOP LEDGE and TOP HEDGE
+
+# species introduced AND on the list of Union concern
+intersect(gsub("_", " ", topledge_introduced$species), concern$Scientific.name) # 2 top ledge species are on the list of Union concern
 
 # species by realm
 nrow(topledge[topledge$Marine=="1",])/nrow(mammals[mammals$Marine=="1",]) # 27% of marine mammals are TOP LEDGE

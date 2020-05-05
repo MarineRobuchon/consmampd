@@ -20,7 +20,8 @@ This folder includes the following files:
 + pext_Mooers2008.csv (file containing the equivalence between IUCN status and probabilities of extinction according to the model of Mooers et al. 2008)
 + assessments_mammals_25092019.csv (file containing global assessments for mammal species in IUCN version 2019-2)
 + ne_50m_coastline.shp, .shx, .prj, .dbf, .cpg (spatial files for the coastline from Natural Earth https://www.naturalearthdata.com/downloads/50m-physical-vectors/)
-+ percentage_pa_grid_raster.tif (raster containing the percentage of area covered by the re-processed and transformed WDPA dataset for each grid cell of the reference gridded map).
++ percentage_pa_grid_raster.tif (raster containing the percentage of area covered by the re-processed and transformed WDPA dataset for each grid cell of the reference gridded map)
++ animal_species_Union-concern.csv (the list of invasive animal species of Union concern, copied from https://ec.europa.eu/environment/nature/invasivealien/list/index_en.htm).
 
 ### 1.2. images
 This folder includes the following subfolders:
