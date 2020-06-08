@@ -29,7 +29,8 @@ This folder includes the following files:
 -   pext\_Mooers2008.csv (file containing the equivalence between IUCN status and probabilities of extinction according to the model of Mooers et al. 2008)
 -   assessments\_mammals\_25092019.csv (file containing global assessments for mammal species in IUCN version 2019-2)
 -   ne\_50m\_coastline.shp, .shx, .prj, .dbf, .cpg (spatial files for the coastline from Natural Earth <https://www.naturalearthdata.com/downloads/50m-physical-vectors/>)
--   percentage\_pa\_grid\_raster.tif (raster containing the percentage of area covered by the re-processed and transformed WDPA dataset for each grid cell of the reference gridded map).
+-   percentage\_pa\_grid\_raster.tif (raster containing the percentage of area covered by the re-processed and transformed WDPA dataset for each grid cell of the reference gridded map)
+-   animal\_species\_Union-concern.csv (the list of invasive animal species of Union concern, copied from <https://ec.europa.eu/environment/nature/invasivealien/list/index_en.htm>).
 
 ### 1.2. images
 
@@ -99,19 +100,19 @@ This folder contains the outputs of the analyses and you should be able to gener
 -   Map\_mammals\_prop-richness-TOPHEDGE.grd, .gri (gridded map of the proportion of TOP 25% HEDGE species)
 -   Map\_mammals\_prop-richness-TOPLEDGE.grd, .gri (gridded map of the proportion of TOP 25% LEDGE species)
 -   tableS1.csv (Table S1 of the paper)
--   fig1.png (Figure 1 of the paper)
+-   fig2.png (Figure 2 of the paper)
 -   figS1.png (Figure S1 of the paper)
 -   tableS2.csv (Table S2 of the paper)
 -   tableS3.csv (Table S3 of the paper)
 -   tableS4.csv (Table S4 of the paper)
--   fig2.png (Figure 2 of the paper)
 -   fig3.png (Figure 3 of the paper)
--   figS2.png (Figure S2 of the paper)
 -   fig4.png (Figure 4 of the paper)
--   figS3.png (Figure S3 of the paper)
--   tableS5.csv (Table S5 of the paper)
+-   figS2.png (Figure S2 of the paper)
 -   fig5.png (Figure 5 of the paper)
 -   figS4.png (Figure S4 of the paper)
+-   tableS5.csv (Table S5 of the paper)
+-   figS3.png (Figure S3 of the paper)
+-   figS5.png (Figure S3 of the paper)
 -   fig6.png (Figure 6 of the paper)
 
 2. Requirements
