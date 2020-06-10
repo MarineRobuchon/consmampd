@@ -4,7 +4,7 @@
 
 ### load packages and functions ###----
 source("./scripts/new_functions.R")
-library(Rarity)
+library(RVAideMemoire)
 library(ggplot2)
 library(dplyr)
 library(png)

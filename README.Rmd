@@ -119,7 +119,7 @@ QUESTION: where to we put these big files (1.45 Go)? Dryad?
 Install the following R packages:
 
 ```{r required, eval = FALSE}
-install.packages(c("ape", "phylobase", "raster", "redlistr", "rgdal", "adiv", "rredlist", "picante", "phytools", "foreach", "doParallel", "Rarity", "dplyr", "ggplot2", "RColorBrewer", "tmap", "png", "grid"))
+install.packages(c("ape", "phylobase", "raster", "redlistr", "rgdal", "adiv", "rredlist", "picante", "phytools", "foreach", "doParallel", "RVAideMemoire", "dplyr", "ggplot2", "RColorBrewer", "tmap", "png", "grid"))
 ```
 
 ## 3. Analyses
