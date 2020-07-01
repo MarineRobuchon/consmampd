@@ -71,6 +71,10 @@ write.csv2(tableS1, paste0(getwd(), "/outputs/tableS1.csv"))
 top10hedge <- mammals[mammals$hedge_rank < 11 , c("species_phylacine", "hedge", "hedge_rank", "IUCN.Status.1.2")]
 top10hedge <- top10hedge[order(top10hedge$hedge_rank),]
 top10hedge$species <- gsub("_", " ", top10hedge$species_phylacine)
+top10hedge$species[6] <- "Daubentonia\nmadagascariensis"
+top10hedge$species[7] <- "Dicerorhinus\nsumatrensis"
+top10hedge$species[8] <- "Solenodon\ncubanus"
+top10hedge$species[9] <- "Solenodon\nparadoxus"
 colnames(top10hedge)[4] <- "Red List status"
 top10hedge$`Red List status` <- factor(top10hedge$`Red List status`)
 levels(top10hedge$`Red List status`) <- c("EN", "CR")
@@ -83,9 +87,9 @@ plot <- ggplot(top10hedge, aes(x = species, y = hedge, fill = `Red List status`)
   geom_bar(stat = "identity", width = 0.75) +
   scale_fill_manual(values = c("orange", "red")) +
   scale_x_discrete(labels = rev(c("1.0", "2.0", "3.0", "4.5", "4.5", "6.0", "7.0", "8.5", "8.5", "10.0"))) +
-  geom_text(aes(label = species), position = position_stack(vjust = 0.5), fontface = "italic", size = 2) +
+  geom_text(aes(label = species), position = position_stack(vjust = 0.5), fontface = "italic", size = 3) +
   labs(title = "(a) TOP 10 HEDGE species", 
-       x = "", y = "HEDGE (My)") +
+       x = "", y = "HEDGE (Ma)") +
   coord_flip() +
   theme_bw() +
   theme(plot.margin = margin(0.25, 0.25, 0.25, 0.25, "cm"),
@@ -121,10 +125,10 @@ top10ledge$reverse <- c(10:1)
 plot <- ggplot(top10ledge, aes(x = species, y = ledge, fill = `Red List status`)) +
   geom_bar(stat = "identity", width = 0.75) +
   scale_x_discrete(labels = rev(paste0(top10ledge$ledge_rank, ".0"))) +
-  geom_text(aes(label = species), position = position_stack(vjust = 0.5), fontface = "italic", size = 2) +
+  geom_text(aes(label = species), position = position_stack(vjust = 0.5), fontface = "italic", size = 3) +
   scale_fill_manual(values = c("green4", "greenyellow", "yellow")) +
   labs(title = "(b) TOP 10 LEDGE species", 
-       x = "", y = "LEDGE (My)") +
+       x = "", y = "LEDGE (Ma)") +
   coord_flip() +
   theme_bw() +
   theme(plot.margin = margin(0.25, 0.25, 0.25, 0.25, "cm"),
@@ -154,7 +158,7 @@ png(filename = paste0(getwd(), "/outputs/figS2.png"), width = 17, height = 15, u
 corPlot(df = tableS1[, c("EDGE", "HEDGE", "LEDGE")], method = "spearman", digits = 2, ties.method =  "average")
 dev.off()
 
-### Table S2 - Common species betwwen TOP EDGE, TOP HEDGE, and TOP LEDGE ----
+### Table S2 - Common species between TOP EDGE, TOP HEDGE, and TOP LEDGE ----
 # comparing TOP HEDGE and TOP EDGE
 tophedge <- head(mammals[order(mammals$hedge_rank) ,], n = round(nrow(mammals)*25/100))
 topedge <- head(mammals[order(mammals$EDGE_rank) ,], n = round(nrow(mammals)*25/100))
@@ -281,7 +285,7 @@ hedge02 <- rasterGrob(readPNG(paste0(getwd(), "/images/top10hedge/hedge02.png"))
 # make the figure
 fig5a <- ggplot(tab_conservation_tophedge, aes(x = conservation, y = n, fill = introduced)) +
   geom_bar(stat = "identity") +
-  scale_fill_manual(values = c("orange", "purple")) +
+  scale_fill_manual(values = c("#2166ac", "#8c510a")) +
   labs(title = "(a) Conservation measures for species in the TOP 25% HEDGE", 
        x = "Type of conservation measure", y = "Number of species in the TOP 25% HEDGE") +
   coord_flip(clip = "off") +
@@ -296,14 +300,14 @@ fig5a <- ggplot(tab_conservation_tophedge, aes(x = conservation, y = n, fill = i
   annotation_custom(hedge05, xmin = 5.5, xmax = 6.5, ymin = -Inf, ymax = -340) +
   annotation_custom(hedge05, xmin = 3.5, xmax = 4.5, ymin = -Inf, ymax = -340) +
   annotation_custom(hedge05, xmin = 2.5, xmax = 3.5, ymin = -Inf, ymax = -340) +
-  annotate("text", x = 7, y = -180, label = "Varecia\nvariegata", fontface = "italic", size = 2, col = "purple") +
-  annotate("text", x = 6, y = -180, label = "Varecia\nvariegata", fontface = "italic", size = 2, col = "purple") +
-  annotate("text", x = 4, y = -180, label = "Varecia\nvariegata", fontface = "italic", size = 2, col = "purple") +
-  annotate("text", x = 3, y = -180, label = "Varecia\nvariegata", fontface = "italic", size = 2, col = "purple") +
+  annotate("text", x = 7, y = -180, label = "Varecia\nvariegata", fontface = "italic", size = 2, col = "#8c510a") +
+  annotate("text", x = 6, y = -180, label = "Varecia\nvariegata", fontface = "italic", size = 2, col = "#8c510a") +
+  annotate("text", x = 4, y = -180, label = "Varecia\nvariegata", fontface = "italic", size = 2, col = "#8c510a") +
+  annotate("text", x = 3, y = -180, label = "Varecia\nvariegata", fontface = "italic", size = 2, col = "#8c510a") +
   annotation_custom(hedge103, xmin = 4.5, xmax = 5.5, ymin = -Inf, ymax = -340) +
-  annotate("text", x = 5, y = -180, label = "Dasyprocta\nmexicana", fontface = "italic", size = 2, col = "purple") +
+  annotate("text", x = 5, y = -180, label = "Dasyprocta\nmexicana", fontface = "italic", size = 2, col = "#8c510a") +
   annotation_custom(hedge02, xmin = 4.5, xmax = 5.5, ymin = 460, ymax = 660) +
-  annotate("text", x = 5, y = 780, label = "Mystacina\nrobusta", fontface = "italic", size = 2, col = "orange")
+  annotate("text", x = 5, y = 780, label = "Mystacina\nrobusta", fontface = "italic", size = 2, col = "#2166ac")
 fig5a
 
 ## fig5b
@@ -337,7 +341,7 @@ ledge01 <- rasterGrob(readPNG(paste0(getwd(), "/images/top10ledge/ledge01.png"))
 # make the figure
 fig5b <- ggplot(tab_conservation_topledge, aes(x = conservation, y = n, fill = introduced)) +
   geom_bar(stat = "identity") +
-  scale_fill_manual(values = c("orange", "purple")) +
+  scale_fill_manual(values = c("#2166ac", "#8c510a")) +
   labs(title = "(b) Conservation measures for species in the TOP 25% LEDGE", 
        x = "Type of conservation measure", y = "Number of species in the TOP 25% LEDGE") +
   coord_flip(clip = "off") +
@@ -351,13 +355,13 @@ fig5b <- ggplot(tab_conservation_topledge, aes(x = conservation, y = n, fill = i
   annotation_custom(ledge14, xmin = 4.5, xmax = 5.5, ymin = -Inf, ymax = -340) +
   annotation_custom(ledge14, xmin = 5.5, xmax = 6.5, ymin = -Inf, ymax = -340) +
   annotation_custom(ledge14, xmin = 3.5, xmax = 4.5, ymin = -Inf, ymax = -340) +
-  annotate("text", x = 5, y = -180, label = "Ornithorhynchus\nanatinus", fontface = "italic", size = 2, col = "purple") +
-  annotate("text", x = 6, y = -180, label = "Ornithorhynchus\nanatinus", fontface = "italic", size = 2, col = "purple") +
-  annotate("text", x = 4, y = -180, label = "Ornithorhynchus\nanatinus", fontface = "italic", size = 2, col = "purple") +
+  annotate("text", x = 5, y = -180, label = "Ornithorhynchus\nanatinus", fontface = "italic", size = 2, col = "#8c510a") +
+  annotate("text", x = 6, y = -180, label = "Ornithorhynchus\nanatinus", fontface = "italic", size = 2, col = "#8c510a") +
+  annotate("text", x = 4, y = -180, label = "Ornithorhynchus\nanatinus", fontface = "italic", size = 2, col = "#8c510a") +
   annotation_custom(ledge98, xmin = 6.5, xmax = 7.5, ymin = -Inf, ymax = -340) +
-  annotate("text", x = 7, y = -180, label = "Myocastor\ncoypus", fontface = "italic", size = 2, col = "purple") +
+  annotate("text", x = 7, y = -180, label = "Myocastor\ncoypus", fontface = "italic", size = 2, col = "#8c510a") +
   annotation_custom(ledge01, xmin = 6.5, xmax = 7.5, ymin = 750, ymax = 1000) +
-  annotate("text", x = 7, y = 1120, label = "Orycteropus\nafer", fontface = "italic", size = 2, col = "orange")
+  annotate("text", x = 7, y = 1120, label = "Orycteropus\nafer", fontface = "italic", size = 2, col = "#2166ac")
   
 fig5b
 
@@ -375,7 +379,7 @@ richness_TOPHEDGE <- raster(paste0(getwd(), "/outputs/Map_mammals_richnessTOPHED
 cuts <- quantile(richness_TOPHEDGE, c(0, 0.1, 0.6, 0.90, 0.95, 0.975, 1))
 cuts
 colors <- brewer.pal(9, "Greys")
-colors [9] <- "#de2d26"
+colors [9] <- rgb(27, 158, 119, max = 255)
 
 richness_TOPHEDGE.tm <- tm_shape(richness_TOPHEDGE) + 
   tm_raster (palette = colors, style = "fixed", title = "No. of species",
@@ -397,7 +401,7 @@ prop_richness_TOPHEDGE <- raster(paste0(getwd(), "/outputs/Map_mammals_prop-rich
 cuts <- quantile(prop_richness_TOPHEDGE, c(0, 0.1, 0.6, 0.90, 0.95, 0.975, 1))
 cuts
 colors <- brewer.pal(9, "Greys")
-colors [9] <- "#de2d26"
+colors [9] <- rgb(27, 158, 119, max = 255)
 
 prop_richness_TOPHEDGE.tm <- tm_shape(prop_richness_TOPHEDGE) + 
   tm_raster (palette = colors, style = "fixed", title = "No. of TOP 25% HEDGE species/\nNo. of species (%)",
@@ -414,7 +418,7 @@ richness_TOPLEDGE <- raster(paste0(getwd(), "/outputs/Map_mammals_richnessTOPLED
 cuts <- quantile(richness_TOPLEDGE, c(0, 0.1, 0.5, 0.9, 0.95, 0.975, 1))
 cuts
 colors <- brewer.pal(9, "Greys")
-colors [9] <- "#de2d26"
+colors [9] <- rgb(217, 95, 2, max = 255)
 
 richness_TOPLEDGE.tm <- tm_shape(richness_TOPLEDGE) + 
   tm_raster (palette = colors, style = "fixed", title = "No. of species",
@@ -431,7 +435,7 @@ prop_richness_TOPLEDGE <- raster(paste0(getwd(), "/outputs/Map_mammals_prop-rich
 cuts <- quantile(prop_richness_TOPLEDGE, c(0, 0.1, 0.5, 0.9, 0.95, 0.975, 1))
 cuts
 colors <- brewer.pal(9, "Greys")
-colors [9] <- "#de2d26"
+colors [9] <- rgb(217, 95, 2, max = 255)
 
 prop_richness_TOPLEDGE.tm <- tm_shape(prop_richness_TOPLEDGE) + 
   tm_raster (palette = colors, style = "fixed", title = "No. of TOP 25% LEDGE species/\nNo. of species (%)",
@@ -464,13 +468,13 @@ median_GexpPD_p0 <- raster(paste0(getwd(), "/outputs/Map_mammals_median-GexpPD-p
 cuts <- quantile(median_GexpPD_p0, c(0, 0.1, 0.5, 0.9, 0.95, 0.975, 1))
 cuts
 colors <- brewer.pal(9, "Greys")
-colors [9] <- "#de2d26"
+colors [9] <- rgb(27, 158, 119, max = 255)
 
 median_GexpPD_p0.tm <- tm_shape(median_GexpPD_p0) + 
   tm_raster (palette = colors, style = "fixed", title = "Evolutionary history (Ma)",
              breaks = cuts, labels = c("0-0.4", "0.5-5.4", "5.5-7.9", "8.0-12.0", "12.1-17.2", "17.3-78.4")) +
   tm_layout(legend.outside = TRUE, legend.outside.position = "right",
-            main.title = "(a) Expected gain in phylogenetic diversity if all species present in the cell are saved from extinction",
+            main.title = "(a) Gain in expected phylogenetic diversity if all species present in the cell are saved from extinction",
             main.title.size = 1, outer.margins = c(0, 0, 0, 0))
 median_GexpPD_p0.tm + coastline.tm 
 fig4a <- median_GexpPD_p0.tm + coastline.tm 
@@ -480,13 +484,13 @@ median_LexpPD_p1 <- raster(paste0(getwd(), "/outputs/Map_mammals_median-LexpPD-p
 cuts <- quantile(abs(median_LexpPD_p1), c(0, 0.1, 0.5, 0.9, 0.95, 0.975, 1)) # abs because values are negative (it is a loss)
 cuts
 colors <- brewer.pal(9, "Greys")
-colors [9] <- "#de2d26"
+colors [9] <- rgb(217, 95, 2, max = 255)
 
 median_LexpPD_p1.tm <- tm_shape(abs(median_LexpPD_p1)) + 
   tm_raster (palette = colors, style = "fixed", title = "Evolutionary history (Ma)",
              breaks = cuts, labels = c("1.2-87.8", "87.9-105.6", "105.7-310.7", "310.8-532.9", "533.0-696.2", "696.3-1172.0")) +
   tm_layout(legend.outside = TRUE, legend.outside.position = "right",
-            main.title = "(b) Expected loss in phylogenetic diversity if all species present in the cell become extinct",
+            main.title = "(b) Loss in expected phylogenetic diversity if all species present in the cell become extinct",
             main.title.size = 1, outer.margins = c(0, 0, 0, 0))
 median_LexpPD_p1.tm + coastline.tm 
 fig4b <- median_LexpPD_p1.tm + coastline.tm 
@@ -994,16 +998,17 @@ GexpPD_hotspots[GexpPD_hotspots >= quantile(median_GexpPD_p0, 0.975)] <- 1 # ass
 ppa <-  raster(paste0(getwd(), "/data/percentage_pa_grid_raster.tif")) # raster with percentage of protected area in each grid cell
 
 GexpPD_hotspots.tm <- tm_shape(GexpPD_hotspots) +
-  tm_raster(palette = "Set1", alpha = 0.9, labels = "", title = "priority areas") +
+  tm_raster(palette = "Dark2", alpha = 0.9, labels = "", title = "priority areas") +
   tm_layout(legend.outside = TRUE, legend.outside.position = "right", outer.margins = c(0, 0, 0, 0))
 
 ppa.tm <- tm_shape(ppa) + 
-  tm_raster (palette = "Blues", alpha = 0.6, style = "fixed", title = "% of area protected",
+  tm_raster (palette = "Purples", alpha = 0.6, style = "fixed", title = "% of area protected",
              breaks = c(0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100),
              labels = c(">0-10", "10-20", "20-30", "30-40", "40-50", "50-60", "60-70", "70-80", "80-90", "90-100")) +
   tm_layout(legend.outside = TRUE, legend.outside.position = "right", outer.margins = c(0, 0, 0, 0))
 
 GexpPD_hotspots.tm + ppa.tm + coastline.tm 
+
 fig6 <- GexpPD_hotspots.tm + ppa.tm + coastline.tm 
 
 png(filename = paste0(getwd(), "/outputs/fig6.png"),
