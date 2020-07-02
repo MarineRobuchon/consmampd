@@ -1,5 +1,5 @@
 ---
-title: "Re-identifying species and areas of interest to conserve global mammalian phylogenetic diversity"
+title: "Conserving phylogenetic diversity beyond minimising losses: assessing new global targets for mammals"
 author: Github repository & scripts created by Marine Robuchon, with contributions of Boris Leroy & Sandrine Pavoine
 output: 
   # html_document: 
@@ -37,7 +37,7 @@ This folder contains data too heavy to be stored in the online github repository
 + Complete_phylogeny.nex (file containing phylogenetic trees)
 + Trait_data.csv (file containing trait data)
 + Current (folder containing species range maps)
-+ MAMMALS.shp, .shx, .sbx, .sbn, .prj, .dbf, .cpg (shapefiles of mammal species distributions from IUCN version 2019-2).
++ MAMMALS.shp, .shx, .sbx, .sbn, .prj, .dbf, .cpg (shapefiles of mammal species distributions from IUCN).
 
 ### 1.4. scripts
 This folder includes the following scripts:
@@ -112,8 +112,7 @@ Clone this repository in your R working directory on your computer. This will cr
 ### 2.2. download data
 Go to https://datadryad.org/stash/dataset/doi:10.5061/dryad.bp26v20 and download data. Decompress the downloaded archive folder into the folder "requireddata". Repeat the operation for the .zip file "Current".
 
-Download the supplementary files MAMMALS.shp, .shx, .sbx, .sbn, .prj, .dbf, .cpg and place them into the folder "requireddata".
-QUESTION: where to we put these big files (1.45 Go)? Dryad?
+Go to https://www.iucnredlist.org/resources/spatial-data-download and download the "Mammals" dataset. Decompress the downloaded archive folder into the folder "requireddata". Note that by doing this, you will access shapefiles of mammal species distributions from the latest available IUCN version, and so it may slightly differ from the 2019-2 version used for the analyses in the paper.
 
 ### 2.3. install packages
 Install the following R packages:
