@@ -1,5 +1,5 @@
 ---
-title: "Conserving phylogenetic diversity beyond minimising losses: assessing new global targets for mammals"
+title: "Revisiting species and areas of interest for conserving global mammalian phylogenetic diversity"
 author: Github repository & scripts created by Marine Robuchon, with contributions of Boris Leroy & Sandrine Pavoine
 output: 
   # html_document: 
