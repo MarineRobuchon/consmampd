@@ -318,3 +318,54 @@ alldata_topledge$introduced <- "no"
 alldata_topledge$introduced[alldata_topledge$species_currentIUCN.x %in% topledge_introduced] <- "yes"
 levels(factor(alldata_topledge$introduced))
 write.csv2(alldata_topledge, paste0(getwd(), "/outputs/mammals_topledge_conservation_introduction.csv"))
+
+### replicate the calculation of hedge and ledge (and hed, not used in the paper) with the phylogeny of Upham et al. 2019 ### ----
+##load phylogenetic trees and select 100
+treeFiles <- lapply(Sys.glob(paste0(getwd(), "/requireddata/Completed_5911sp_topoCons_NDexp/MamPhy_BDvr_Completed_5911sp_topoCons_NDexp_v2_tree*.tre")), read.tree)
+
+a <- sample(c(1:10000), 1)
+rand_mamm_tree <- treeFiles[[a]]
+for (i in 1:99){
+  a <- sample(c(1:10000),1)
+  tree <- treeFiles[[a]]
+  rand_mamm_tree <- c(rand_mamm_tree,tree)
+}
+
+## prepare pext and trees for the calculations
+mam_status <- mam_traits$Imputed.Status
+mam_pext <- status2pext(mam_status)$pext_IUCN50 
+names(mam_pext) <- mam_traits$Binomial.1.2
+mam_pext_upham <- mam_pext[which(names(mam_pext)%in%rand_mamm_tree[[1]]$tip.label)]
+
+mam_trees <- rand_mamm_tree
+for (i in 1:length(mam_trees)){
+  mam_trees[[i]] <- drop.tip(mam_trees[[i]],which(!mam_trees[[i]]$tip.label%in%names(mam_pext_upham)))
+}
+
+length(mam_trees[[1]]$tip.label) # 5317 tips - not logical since the final csv file with scores has 5246 species
+
+## make the calculations (they take about 5 hours)
+mam_HED <- list()
+for (i in 1:length(mam_trees))
+{
+  mam_tree <- mam_trees[[i]]
+  mam_HED[[i]] <- HED2(phyl = mam_tree, proba = mam_pext_upham)
+}
+
+for (i in 1:length(mam_trees)){
+  mam_HED[[i]]$scores<-mam_HED[[i]]$scores[order(row.names(mam_HED[[i]]$scores)),]
+}
+
+mam.HEDallscores <- lapply(X = mam_HED, function(m) m$scores) # extraction of the list of scores
+mam.HEDallscores <- do.call(cbind, mam.HEDallscores) # and transform it to a dataframe
+mam.hedgemed <- apply(X = mam.HEDallscores[colnames(mam.HEDallscores)=="HEDGE"], MARGIN = 1, FUN = median)  
+mam.ledgemed <- apply(X = mam.HEDallscores[colnames(mam.HEDallscores)=="LEDGE"], MARGIN = 1, FUN = median)
+mam.hedmed <- apply(X = mam.HEDallscores[colnames(mam.HEDallscores)=="HED"], MARGIN = 1, FUN = median)
+mam.hedgesd <- apply(X = mam.HEDallscores[colnames(mam.HEDallscores)=="HEDGE"], MARGIN = 1, FUN = sd)  
+mam.ledgesd <- apply(X = mam.HEDallscores[colnames(mam.HEDallscores)=="LEDGE"], MARGIN = 1, FUN = sd) 
+mam.hedsd <- apply(X = mam.HEDallscores[colnames(mam.HEDallscores)=="HED"], MARGIN = 1, FUN = sd)
+mam.med <- data.frame(cbind(hedge_median = mam.hedgemed, hedge_sd = mam.hedgesd, 
+                            ledge_median = mam.ledgemed, ledge_sd = mam.ledgesd,
+                            hed_median = mam.hedmed, hed_sd = mam.hedsd))
+mam.med <- mam.med[order(mam.med$hedge_median, decreasing = TRUE),]
+write.csv2(mam.med, paste0(getwd(), "/outputs/scores_Mammals_median-over-the-100-resolved-trees_UPHAM.csv")) # save results

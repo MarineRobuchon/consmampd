@@ -153,8 +153,8 @@ ggsave(paste0(getwd(),"/outputs/fig2.png"), plot = multiplot(fig2a, fig2b, cols 
        width = 17, height = 25, units = "cm", dpi = 600, limitsize = TRUE)
 
 
-### Figure S2 - Pairwise correlations between EDGE, HEDGE and LEDGE scores ----
-png(filename = paste0(getwd(), "/outputs/figS2.png"), width = 17, height = 15, units = "cm", res = 600)
+### Figure S3 - Pairwise correlations between EDGE, HEDGE and LEDGE scores ----
+png(filename = paste0(getwd(), "/outputs/figS3.png"), width = 17, height = 15, units = "cm", res = 600)
 corPlot(df = tableS1[, c("EDGE", "HEDGE", "LEDGE")], method = "spearman", digits = 2, ties.method =  "average")
 dev.off()
 
@@ -258,6 +258,7 @@ nrow(topledge[topledge$Aerial=="1",])/nrow(mammals[mammals$Aerial=="1",]) # 25% 
 alldata_tophedge <- read.csv2(paste0(getwd(), "/outputs/mammals_tophedge_conservation_introduction.csv"))
 gg_conservation_tophedge <- unique(alldata_tophedge[, c("species_phylacine", "conservation_classification", "introduced")])
 colnames(gg_conservation_tophedge) <- c("species", "conservation", "introduced")
+gg_conservation_tophedge$conservation <- as.factor(gg_conservation_tophedge$conservation)
 # rename the levels
 levels(gg_conservation_tophedge$conservation) <- c("Land/water protection", 
                                                    "Land/water management", 
@@ -314,6 +315,7 @@ fig5a
 alldata_topledge <- read.csv2(paste0(getwd(), "/outputs/mammals_topledge_conservation_introduction.csv"))
 gg_conservation_topledge <- unique(alldata_topledge[, c("species_phylacine", "conservation_classification", "introduced")])
 colnames(gg_conservation_topledge) <- c("species", "conservation", "introduced")
+gg_conservation_topledge$conservation <- as.factor(gg_conservation_topledge$conservation)
 # rename the levels
 levels(gg_conservation_topledge$conservation) <- c("Land/water protection", 
                                                    "Land/water management", 
@@ -370,7 +372,7 @@ ggsave(paste0(getwd(),"/outputs/fig5.png"),
        plot = multiplot(fig5a, fig5b, cols = 1), scale = 1, width = 17, height = 17, units = "cm",
        dpi = 600, limitsize = TRUE)
 
-### Figures 3 and S1 - Spatial patterns and hotspots of ----
+### Figures 3 and S2 - Spatial patterns and hotspots of ----
 # the TOP 25% HEDGE species (a),
 # the TOP 25% LEDGE species (b)
 
@@ -396,7 +398,7 @@ coastline.tm <- tm_shape(coastline, projection = crs(richness_TOPHEDGE)) + tm_li
 richness_TOPHEDGE.tm + coastline.tm 
 fig3a <- richness_TOPHEDGE.tm + coastline.tm
 
-## S1aprop
+## S2aprop
 prop_richness_TOPHEDGE <- raster(paste0(getwd(), "/outputs/Map_mammals_prop-richness-TOPHEDGE.grd"))
 cuts <- quantile(prop_richness_TOPHEDGE, c(0, 0.1, 0.6, 0.90, 0.95, 0.975, 1))
 cuts
@@ -411,7 +413,7 @@ prop_richness_TOPHEDGE.tm <- tm_shape(prop_richness_TOPHEDGE) +
             main.title = "(a) Proportion of TOP 25% HEDGE species, 1369 species",
             main.title.size = 1, outer.margins = c(0, 0, 0, 0))
 prop_richness_TOPHEDGE.tm + coastline.tm 
-figS1aprop <- prop_richness_TOPHEDGE.tm + coastline.tm
+figS2aprop <- prop_richness_TOPHEDGE.tm + coastline.tm
 
 ## 3b
 richness_TOPLEDGE <- raster(paste0(getwd(), "/outputs/Map_mammals_richnessTOPLEDGE.grd"))
@@ -430,7 +432,7 @@ richness_TOPLEDGE.tm <- tm_shape(richness_TOPLEDGE) +
 richness_TOPLEDGE.tm + coastline.tm 
 fig3b <- richness_TOPLEDGE.tm + coastline.tm
 
-## S1bprop
+## S2bprop
 prop_richness_TOPLEDGE <- raster(paste0(getwd(), "/outputs/Map_mammals_prop-richness-TOPLEDGE.grd"))
 cuts <- quantile(prop_richness_TOPLEDGE, c(0, 0.1, 0.5, 0.9, 0.95, 0.975, 1))
 cuts
@@ -445,7 +447,7 @@ prop_richness_TOPLEDGE.tm <- tm_shape(prop_richness_TOPLEDGE) +
             main.title = "(b) Proportion of TOP 25% LEDGE species, 1369 species",
             main.title.size = 1, outer.margins = c(0, 0, 0, 0))
 prop_richness_TOPLEDGE.tm + coastline.tm 
-figS1bprop <- prop_richness_TOPLEDGE.tm + coastline.tm
+figS2bprop <- prop_richness_TOPLEDGE.tm + coastline.tm
 
 ## save Figure 3 
 png(filename = paste0(getwd(), "/outputs/fig3.png"),
@@ -453,10 +455,10 @@ png(filename = paste0(getwd(), "/outputs/fig3.png"),
 multiplot(fig3a, fig3b, cols = 1)
 dev.off()
 
-## save Figure S1
+## save Figure S2
 png(filename = paste0(getwd(), "/outputs/figS1.png"),
     width = 13, height = 8, units = "cm", pointsize = 8, res = 600)
-multiplot(figS1aprop, figS1bprop, cols = 1)
+multiplot(figS2aprop, figS2bprop, cols = 1)
 dev.off()
 
 ### Figure 4 - Spatial patterns and hotspots of ----
@@ -501,7 +503,7 @@ png(filename = paste0(getwd(), "/outputs/fig4.png"),
 multiplot(fig4a, fig4b, cols = 1)
 dev.off()
 
-### Figure S3 - Pairwise correlations between the 12 spatial scores ----
+### Figure S4 - Pairwise correlations between the 12 spatial scores ----
 SR <- raster(paste0(getwd(), "/outputs/Map_mammals_richness"))
 TSR <- raster(paste0(getwd(), "/outputs/Map_mammals_threatened-richness"))
 RSR <- raster(paste0(getwd(), "/outputs/Map_mammals_rare-richness"))
@@ -520,7 +522,7 @@ table_spatial_scores <- data.frame(SR = getValues(SR), TSR = getValues(TSR), RSR
                                    HEDGE = getValues(HEDGE), LEDGE = getValues(abs(LEDGE)), GexpPD = getValues(GexpPD), LexpPD = getValues(abs(LexpPD)))
 head(table_spatial_scores)
 
-png(filename = paste0(getwd(), "/outputs/figS3.png"), width = 17, height = 17, units = "cm", res = 600, pointsize = 8)
+png(filename = paste0(getwd(), "/outputs/figS4.png"), width = 17, height = 17, units = "cm", res = 600, pointsize = 8)
 corPlot(df = table_spatial_scores, method = "spearman", digits = 2, ties.method =  "average")
 dev.off()
 
@@ -742,7 +744,7 @@ tableS3$LexpPD <- c(NA,
 
 write.csv2(tableS3, paste0(getwd(), "/outputs/tableS3.csv"))
 
-### Figure S4 and S5 - Spatial patterns and hotspots of ----
+### Figure S5 and S6 - Spatial patterns and hotspots of ---- FIX§§§
 # species richness (a), 
 # threatened species richness (b), 
 # rare species richness (c), 
@@ -752,7 +754,7 @@ write.csv2(tableS3, paste0(getwd(), "/outputs/tableS3.csv"))
 # rare phylogenetic diversity (g),
 # and phylogenetic-weighted rarity (h) 
 
-## S4a
+## S5a
 richness <- raster(paste0(getwd(), "/outputs/Map_mammals_richness.grd"))
 cuts <- quantile(richness, c(0, 0.25, 0.50, 0.75, 0.90, 0.95, 0.975, 1))
 colors <- brewer.pal(9, "Greys")
@@ -765,9 +767,9 @@ richness.tm <- tm_shape(richness) +
             main.title = "(a) Species richness, 5477 species",
             main.title.size = 1, outer.margins = c(0, 0, 0, 0))
 richness.tm + coastline.tm 
-figS4a <- richness.tm + coastline.tm 
+figS5a <- richness.tm + coastline.tm 
 
-## S4b
+## S5b
 richness_threatened <- raster(paste0(getwd(), "/outputs/Map_mammals_threatened-richness.grd"))
 cuts <- quantile(richness_threatened, c(0, 0.1, 0.75, 0.90, 0.95, 0.975, 1))
 cuts
@@ -782,9 +784,9 @@ richness_threatened.tm <- tm_shape(richness_threatened) +
             main.title = "(b) Threatened species richness, 1193 species",
             main.title.size = 1, outer.margins = c(0, 0, 0, 0))
 richness_threatened.tm + coastline.tm 
-figS4b <- richness_threatened.tm + coastline.tm
+figS5b <- richness_threatened.tm + coastline.tm
 
-## S5bprop
+## S6bprop
 prop_richness_threatened <- raster(paste0(getwd(), "/outputs/Map_mammals_prop-richness-threatened.grd"))
 cuts <- quantile(prop_richness_threatened, c(0, 0.1, 0.75, 0.90, 0.95, 0.975, 1))
 cuts
@@ -799,9 +801,9 @@ prop_richness_threatened.tm <- tm_shape(prop_richness_threatened) +
             main.title = "(b) Proportion of threatened species, 1193 species",
             main.title.size = 1, outer.margins = c(0, 0, 0, 0))
 prop_richness_threatened.tm + coastline.tm 
-figS5b <- prop_richness_threatened.tm + coastline.tm
+figS6b <- prop_richness_threatened.tm + coastline.tm
 
-## S4c
+## S5c
 richness_rare <- raster(paste0(getwd(), "/outputs/Map_mammals_rare-richness.grd"))
 cuts <- quantile(richness_rare, c(0, 0.85, 0.90, 0.95, 0.975, 1))
 colors <- brewer.pal(9, "Greys")
@@ -814,9 +816,9 @@ richness_rare.tm <- tm_shape(richness_rare) +
             main.title = "(c) Rare species richness, 2736 species",
             main.title.size = 1, outer.margins = c(0, 0, 0, 0))
 richness_rare.tm + coastline.tm 
-figS4c <- richness_rare.tm + coastline.tm
+figS5c <- richness_rare.tm + coastline.tm
 
-## S5cprop
+## S6cprop
 prop_richness_rare <- raster(paste0(getwd(), "/outputs/Map_mammals_prop-richness-rare.grd"))
 cuts <- quantile(prop_richness_rare, c(0, 0.85, 0.90, 0.95, 0.975, 1))
 cuts
@@ -830,9 +832,9 @@ prop_richness_rare.tm <- tm_shape(prop_richness_rare) +
             main.title = "(c) Proportion of rare species, 2736 species",
             main.title.size = 1, outer.margins = c(0, 0, 0, 0))
 prop_richness_rare.tm + coastline.tm 
-figS5c <- prop_richness_rare.tm + coastline.tm
+figS6c <- prop_richness_rare.tm + coastline.tm
 
-## S4d
+## S5d
 weighted_rarity <- raster(paste0(getwd(), "/outputs/Map_mammals_weighted-rarity.grd"))
 cuts <- quantile(weighted_rarity, c(0, 0.9, 0.95, 0.975, 1))
 cuts
@@ -846,9 +848,9 @@ weighted_rarity.tm <- tm_shape(weighted_rarity) +
             main.title = "(d) Species-weighted rarity, 5477 species",
             main.title.size = 1, outer.margins = c(0, 0, 0, 0))
 weighted_rarity.tm + coastline.tm
-figS4d <- weighted_rarity.tm + coastline.tm
+figS5d <- weighted_rarity.tm + coastline.tm
 
-## S5dprop
+## S6dprop
 prop_weighted_rarity <- raster(paste0(getwd(), "/outputs/Map_mammals_mean-weighted-rarity.grd"))
 cuts <- quantile(prop_weighted_rarity, c(0, 0.9, 0.95, 0.975, 1))
 cuts
@@ -862,9 +864,9 @@ prop_weighted_rarity.tm <- tm_shape(prop_weighted_rarity) +
             main.title = "(d) Mean species-weighted rarity, 5477 species",
             main.title.size = 1, outer.margins = c(0, 0, 0, 0))
 prop_weighted_rarity.tm + coastline.tm 
-figS5d <- prop_weighted_rarity.tm + coastline.tm
+figS6d <- prop_weighted_rarity.tm + coastline.tm
 
-## S4e
+## S5e
 median_PD <- raster(paste0(getwd(), "/outputs/Map_mammals_median-PD.grd"))
 cuts <- quantile(median_PD, c(0, 0.5, 0.9, 0.95, 0.975, 1))
 cuts
@@ -878,9 +880,9 @@ median_PD.tm <- tm_shape(median_PD) +
             main.title = "(e) Phylogenetic diversity, 5477 species",
             main.title.size = 1, outer.margins = c(0, 0, 0, 0))
 median_PD.tm + coastline.tm 
-figS4e <- median_PD.tm + coastline.tm
+figS5e <- median_PD.tm + coastline.tm
 
-## S4f
+## S5f
 median_threatened_PD <- raster(paste0(getwd(), "/outputs/Map_mammals_median-threatened-PD.grd"))
 cuts <- quantile(median_threatened_PD, c(0, 0.1, 0.5, 0.9, 0.95, 0.975, 1))
 cuts
@@ -894,9 +896,9 @@ median_threatened_PD.tm <- tm_shape(median_threatened_PD) +
             main.title = "(f) Threatened phylogenetic diversity, 1193 species",
             main.title.size = 1, outer.margins = c(0, 0, 0, 0))
 median_threatened_PD.tm + coastline.tm 
-figS4f <- median_threatened_PD.tm + coastline.tm
+figS5f <- median_threatened_PD.tm + coastline.tm
 
-## S5fprop
+## S6fprop
 prop_median_threatened_PD <- raster(paste0(getwd(), "/outputs/Map_mammals_prop-threatened-PD.grd"))
 cuts <- quantile(prop_median_threatened_PD, c(0, 0.1, 0.5, 0.9, 0.95, 0.975, 1))
 cuts
@@ -910,9 +912,9 @@ prop_median_threatened_PD.tm <- tm_shape(prop_median_threatened_PD) +
             main.title = "(f) Proportion of threatened phylogenetic diversity, 1193 species",
             main.title.size = 1, outer.margins = c(0, 0, 0, 0))
 prop_median_threatened_PD.tm + coastline.tm 
-figS5f<- prop_median_threatened_PD.tm + coastline.tm
+figS6f<- prop_median_threatened_PD.tm + coastline.tm
 
-## S4g
+## S5g
 median_rare_PD <- raster(paste0(getwd(), "/outputs/Map_mammals_median-rare-PD.grd"))
 cuts <- quantile(median_rare_PD, c(0, 0.85, 0.9, 0.95, 0.975, 1))
 cuts
@@ -926,9 +928,9 @@ median_rare_PD.tm <- tm_shape(median_rare_PD) +
             main.title = "(g) Rare phylogenetic diversity, 2736 species",
             main.title.size = 1, outer.margins = c(0, 0, 0, 0))
 median_rare_PD.tm + coastline.tm 
-figS4g <- median_rare_PD.tm + coastline.tm 
+figS5g <- median_rare_PD.tm + coastline.tm 
 
-## S5gprop
+## S6gprop
 prop_median_rare_PD <- raster(paste0(getwd(), "/outputs/Map_mammals_prop-rare-PD.grd"))
 cuts <- quantile(prop_median_rare_PD, c(0, 0.85, 0.9, 0.95, 0.975, 1))
 cuts
@@ -942,9 +944,9 @@ prop_median_rare_PD.tm <- tm_shape(prop_median_rare_PD) +
             main.title = "(g) Proportion of rare phylogenetic diversity, 2736 species",
             main.title.size = 1, outer.margins = c(0, 0, 0, 0))
 prop_median_rare_PD.tm + coastline.tm 
-figS5g <- prop_median_rare_PD.tm + coastline.tm 
+figS6g <- prop_median_rare_PD.tm + coastline.tm 
 
-## S4h
+## S5h
 median_PWR <- raster(paste0(getwd(), "/outputs/Map_mammals_median-PWR.grd"))
 cuts <- quantile(median_PWR, c(0, 0.5, 0.9, 0.95, 0.975, 1))
 cuts
@@ -958,9 +960,9 @@ median_PWR.tm <- tm_shape(median_PWR) +
             main.title = "(h) Phylogenetic-weighted rarity, 5477 species",
             main.title.size = 1, outer.margins = c(0, 0, 0, 0))
 median_PWR.tm + coastline.tm
-figS4h <- median_PWR.tm + coastline.tm
+figS5h <- median_PWR.tm + coastline.tm
 
-## S5hprop
+## S6hprop
 prop_median_PWR <- raster(paste0(getwd(), "/outputs/Map_mammals_mean-PWR.grd"))
 cuts <- quantile(prop_median_PWR, c(0, 0.9, 0.95, 0.975, 1))
 cuts
@@ -974,18 +976,18 @@ prop_median_PWR.tm <- tm_shape(prop_median_PWR) +
             main.title = "(h) Mean phylogenetic-weighted rarity, 5477 species",
             main.title.size = 1, outer.margins = c(0, 0, 0, 0))
 prop_median_PWR.tm + coastline.tm
-figS5h <- prop_median_PWR.tm + coastline.tm
-
-## save Figure S4
-png(filename = paste0(getwd(), "/outputs/figS4.png"),
-    width = 17, height = 12, units = "cm", pointsize = 8, res = 600)
-multiplot(figS4a, figS4b, figS4c, figS4d, figS4e, figS4f, figS4g, figS4h, cols = 2)
-dev.off()
+figS6h <- prop_median_PWR.tm + coastline.tm
 
 ## save Figure S5
 png(filename = paste0(getwd(), "/outputs/figS5.png"),
     width = 17, height = 12, units = "cm", pointsize = 8, res = 600)
-multiplot(figS4a, figS5b, figS5c, figS5d, figS4e, figS5f, figS5g, figS5h, cols = 2)
+multiplot(figS5a, figS5b, figS5c, figS5d, figS5e, figS5f, figS5g, figS5h, cols = 2)
+dev.off()
+
+## save Figure S6
+png(filename = paste0(getwd(), "/outputs/figS6.png"),
+    width = 17, height = 12, units = "cm", pointsize = 8, res = 600)
+multiplot(figS5a, figS6b, figS6c, figS6d, figS5e, figS6f, figS6g, figS6h, cols = 2)
 dev.off()
 
 
@@ -1015,3 +1017,41 @@ png(filename = paste0(getwd(), "/outputs/fig6.png"),
     width = 13, height = 4, units = "cm", pointsize = 8, res = 600)
 fig6
 dev.off()
+
+### Figure S1 - Correlations of species scores between the 2 phylogenies (PHYLACINE versus UPHAM) ----
+scores_phylacine <- read.csv2(paste0(getwd(), "/outputs/scores_Mammals_median-over-the-100-resolved-trees.csv"))
+scores_phylacine <- scores_phylacine[, c(1, 2, 4)]
+colnames(scores_phylacine) <- c("species", "HEDGE_PHYLACINE", "LEDGE_PHYLACINE")
+scores_upham <- read.csv2(paste0(getwd(), "/outputs/scores_Mammals_median-over-the-100-resolved-trees_UPHAM.csv"))
+scores_upham <- scores_upham[, c(1, 2, 4)]
+colnames(scores_upham) <- c("species", "HEDGE_UPHAM", "LEDGE_UPHAM")
+scores_all <- merge(scores_phylacine, scores_upham, by = "species")
+
+png(filename = paste0(getwd(), "/outputs/figS1a.png"),
+    width = 17, height = 12, units = "cm", res = 600)
+corPlot(df = scores_all[, c(2, 4)], method = "spearman", digits = 2, ties.method =  "average") # Spearman correlation for HEDGE
+dev.off()
+
+png(filename = paste0(getwd(), "/outputs/figS1b.png"),
+    width = 17, height = 12, units = "cm", res = 600)
+corPlot(df = scores_all[, c(3, 5)], method = "spearman", digits = 2, ties.method =  "average") # Spearman correlation for LEDGE
+dev.off()
+
+  
+# comparing TOP HEDGE PHYLACINE and TOP HEDGE UPHAM
+tophedge_upham <- head(scores_all[order(scores_all$HEDGE_UPHAM, decreasing = TRUE) ,], n = round(nrow(scores_all)*25/100))
+species_tophedge_phylacine_upham <- intersect(tophedge$species_phylacine, tophedge_upham$species)
+length(species_tophedge_phylacine_upham) # 1231 common species
+length(species_tophedge_phylacine_upham)/nrow(tophedge_upham) *100 # 93 %
+species_hedgeupham_nothedgephylacine <- setdiff(tophedge_upham$species, tophedge$species_phylacine)
+species_hedgeupham_nothedgephylacine # 98 species TOP HEDGE UPHAM not in TOP HEDGE PHYLACINE
+hedgeupham_nothedgephylacine <- tophedge_upham[tophedge_upham$species %in% species_hedgeupham_nothedgephylacine,]
+
+# comparing TOP LEDGE PHYLACINE and TOP LEDGE UPHAM
+topledge_upham <- head(scores_all[order(scores_all$LEDGE_UPHAM, decreasing = TRUE) ,], n = round(nrow(scores_all)*25/100))
+species_topledge_phylacine_upham <- intersect(topledge$species_phylacine, topledge_upham$species)
+length(species_topledge_phylacine_upham) # 736 common species
+length(species_topledge_phylacine_upham)/nrow(topledge_upham) *100 # 55 %
+species_ledgeupham_notledgephylacine <- setdiff(topledge_upham$species, topledge$species_phylacine)
+species_ledgeupham_notledgephylacine # 593 species TOP HEDGE UPHAM not in TOP HEDGE PHYLACINE
+ledgeupham_notledgephylacine <- topledge_upham[topledge_upham$species %in% species_ledgeupham_notledgephylacine,]

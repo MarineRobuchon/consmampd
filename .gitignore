@@ -43,4 +43,4 @@ vignettes/*.pdf
 /requireddata/*
 /requiredoutputs/*
 *.Rproj
-
+/scripts/comparison phylacine and upham trees - paper Marine.R
