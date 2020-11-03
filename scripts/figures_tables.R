@@ -991,7 +991,7 @@ multiplot(figS5a, figS6b, figS6c, figS6d, figS5e, figS6f, figS6g, figS6h, cols =
 dev.off()
 
 
-### Figure 6 - Intersection between priority areas and and the percentage of area protected by the current network of protected areas ----
+### Figure 6 - Intersection between priority areas (a) or loss-significant areas (b) and the percentage of area protected by the current network of protected areas ----
 median_GexpPD_p0 <- raster(paste0(getwd(), "/outputs/Map_mammals_median-GexpPD-p0.grd"))
 GexpPD_hotspots <- median_GexpPD_p0
 GexpPD_hotspots[GexpPD_hotspots < quantile(median_GexpPD_p0, 0.975)] <- NA # NA values for cells which are not hotspots
@@ -999,9 +999,14 @@ GexpPD_hotspots[GexpPD_hotspots >= quantile(median_GexpPD_p0, 0.975)] <- 1 # ass
 
 ppa <-  raster(paste0(getwd(), "/data/percentage_pa_grid_raster.tif")) # raster with percentage of protected area in each grid cell
 
+ppa*GexpPD_hotspots
+summary(ppa*GexpPD_hotspots) # summary of protection coverage over the priority areas
+cellStats(ppa*GexpPD_hotspots, stat = "sum") /(0.025*51120) # percentage of the total surface of priority areas under protection
+
 GexpPD_hotspots.tm <- tm_shape(GexpPD_hotspots) +
   tm_raster(palette = "Dark2", alpha = 0.9, labels = "", title = "priority areas") +
-  tm_layout(legend.outside = TRUE, legend.outside.position = "right", outer.margins = c(0, 0, 0, 0))
+  tm_layout(legend.outside = TRUE, legend.outside.position = "right", outer.margins = c(0, 0, 0, 0),
+            main.title = "(a) Protection coverage of priority areas", main.title.size = 1)
 
 ppa.tm <- tm_shape(ppa) + 
   tm_raster (palette = "Purples", alpha = 0.6, style = "fixed", title = "% of area protected",
@@ -1011,11 +1016,32 @@ ppa.tm <- tm_shape(ppa) +
 
 GexpPD_hotspots.tm + ppa.tm + coastline.tm 
 
-fig6 <- GexpPD_hotspots.tm + ppa.tm + coastline.tm 
+fig6a <- GexpPD_hotspots.tm + ppa.tm + coastline.tm 
+
+median_LexpPD_p1 <- raster(paste0(getwd(), "/outputs/Map_mammals_median-LexpPD-p1.grd"))
+LexpPD_hotspots <- median_LexpPD_p1
+LexpPD_hotspots[abs(LexpPD_hotspots) < quantile(abs(median_LexpPD_p1), 0.975)] <- NA # NA values for cells which are not hotspots
+LexpPD_hotspots[abs(LexpPD_hotspots) >= quantile(abs(median_GexpPD_p0), 0.975)] <- 1 # assign value 1 to priority areas
+
+ppa*LexpPD_hotspots
+summary(ppa*LexpPD_hotspots) # summary of protection coverage over the loss-significant areas
+cellStats(ppa*LexpPD_hotspots, stat = "sum") /(0.025*51120) # percentage of the total surface of loss-significant areas under protection
+
+colors <- brewer.pal(9, "Greys")
+colors [1] <- rgb(217, 95, 2, max = 255)
+
+LexpPD_hotspots.tm <- tm_shape(LexpPD_hotspots) +
+  tm_raster(palette = colors, alpha = 0.9, labels = "", title = "loss-significant areas") +
+  tm_layout(legend.outside = TRUE, legend.outside.position = "right", outer.margins = c(0, 0, 0, 0),
+            main.title = "(b) Protection coverage of loss-significant areas", main.title.size = 1)
+
+LexpPD_hotspots.tm + ppa.tm + coastline.tm 
+
+fig6b <- LexpPD_hotspots.tm + ppa.tm + coastline.tm 
 
 png(filename = paste0(getwd(), "/outputs/fig6.png"),
-    width = 13, height = 4, units = "cm", pointsize = 8, res = 600)
-fig6
+    width = 13, height = 8, units = "cm", pointsize = 8, res = 600)
+multiplot(fig6a, fig6b, cols = 1)
 dev.off()
 
 ### Figure S1 - Correlations of species scores between the 2 phylogenies (PHYLACINE versus UPHAM) ----
