@@ -153,8 +153,8 @@ ggsave(paste0(getwd(),"/outputs/fig2.png"), plot = multiplot(fig2a, fig2b, cols 
        width = 17, height = 25, units = "cm", dpi = 600, limitsize = TRUE)
 
 
-### Figure S3 - Pairwise correlations between EDGE, HEDGE and LEDGE scores ----
-png(filename = paste0(getwd(), "/outputs/figS3.png"), width = 17, height = 15, units = "cm", res = 600)
+### Figure S4 - Pairwise correlations between EDGE, HEDGE and LEDGE scores ----
+png(filename = paste0(getwd(), "/outputs/figS4.png"), width = 17, height = 15, units = "cm", res = 600)
 corPlot(df = tableS1[, c("EDGE", "HEDGE", "LEDGE")], method = "spearman", digits = 2, ties.method =  "average")
 dev.off()
 
@@ -372,7 +372,7 @@ ggsave(paste0(getwd(),"/outputs/fig5.png"),
        plot = multiplot(fig5a, fig5b, cols = 1), scale = 1, width = 17, height = 17, units = "cm",
        dpi = 600, limitsize = TRUE)
 
-### Figures 3 and S2 - Spatial patterns and hotspots of ----
+### Figures 3 and S3 - Spatial patterns and hotspots of ----
 # the TOP 25% HEDGE species (a),
 # the TOP 25% LEDGE species (b)
 
@@ -398,7 +398,7 @@ coastline.tm <- tm_shape(coastline, projection = crs(richness_TOPHEDGE)) + tm_li
 richness_TOPHEDGE.tm + coastline.tm 
 fig3a <- richness_TOPHEDGE.tm + coastline.tm
 
-## S2aprop
+## S3aprop
 prop_richness_TOPHEDGE <- raster(paste0(getwd(), "/outputs/Map_mammals_prop-richness-TOPHEDGE.grd"))
 cuts <- quantile(prop_richness_TOPHEDGE, c(0, 0.1, 0.6, 0.90, 0.95, 0.975, 1))
 cuts
@@ -413,7 +413,7 @@ prop_richness_TOPHEDGE.tm <- tm_shape(prop_richness_TOPHEDGE) +
             main.title = "(a) Proportion of TOP 25% HEDGE species, 1369 species",
             main.title.size = 1, outer.margins = c(0, 0, 0, 0))
 prop_richness_TOPHEDGE.tm + coastline.tm 
-figS2aprop <- prop_richness_TOPHEDGE.tm + coastline.tm
+figS3aprop <- prop_richness_TOPHEDGE.tm + coastline.tm
 
 ## 3b
 richness_TOPLEDGE <- raster(paste0(getwd(), "/outputs/Map_mammals_richnessTOPLEDGE.grd"))
@@ -432,7 +432,7 @@ richness_TOPLEDGE.tm <- tm_shape(richness_TOPLEDGE) +
 richness_TOPLEDGE.tm + coastline.tm 
 fig3b <- richness_TOPLEDGE.tm + coastline.tm
 
-## S2bprop
+## S3bprop
 prop_richness_TOPLEDGE <- raster(paste0(getwd(), "/outputs/Map_mammals_prop-richness-TOPLEDGE.grd"))
 cuts <- quantile(prop_richness_TOPLEDGE, c(0, 0.1, 0.5, 0.9, 0.95, 0.975, 1))
 cuts
@@ -447,7 +447,7 @@ prop_richness_TOPLEDGE.tm <- tm_shape(prop_richness_TOPLEDGE) +
             main.title = "(b) Proportion of TOP 25% LEDGE species, 1369 species",
             main.title.size = 1, outer.margins = c(0, 0, 0, 0))
 prop_richness_TOPLEDGE.tm + coastline.tm 
-figS2bprop <- prop_richness_TOPLEDGE.tm + coastline.tm
+figS3bprop <- prop_richness_TOPLEDGE.tm + coastline.tm
 
 ## save Figure 3 
 png(filename = paste0(getwd(), "/outputs/fig3.png"),
@@ -455,10 +455,10 @@ png(filename = paste0(getwd(), "/outputs/fig3.png"),
 multiplot(fig3a, fig3b, cols = 1)
 dev.off()
 
-## save Figure S2
-png(filename = paste0(getwd(), "/outputs/figS1.png"),
+## save Figure S3
+png(filename = paste0(getwd(), "/outputs/figS3.png"),
     width = 13, height = 8, units = "cm", pointsize = 8, res = 600)
-multiplot(figS2aprop, figS2bprop, cols = 1)
+multiplot(figS3aprop, figS3bprop, cols = 1)
 dev.off()
 
 ### Figure 4 - Spatial patterns and hotspots of ----
@@ -503,7 +503,7 @@ png(filename = paste0(getwd(), "/outputs/fig4.png"),
 multiplot(fig4a, fig4b, cols = 1)
 dev.off()
 
-### Figure S4 - Pairwise correlations between the 12 spatial scores ----
+### Figure S5 - Pairwise correlations between the 12 spatial scores ----
 SR <- raster(paste0(getwd(), "/outputs/Map_mammals_richness"))
 TSR <- raster(paste0(getwd(), "/outputs/Map_mammals_threatened-richness"))
 RSR <- raster(paste0(getwd(), "/outputs/Map_mammals_rare-richness"))
@@ -522,7 +522,7 @@ table_spatial_scores <- data.frame(SR = getValues(SR), TSR = getValues(TSR), RSR
                                    HEDGE = getValues(HEDGE), LEDGE = getValues(abs(LEDGE)), GexpPD = getValues(GexpPD), LexpPD = getValues(abs(LexpPD)))
 head(table_spatial_scores)
 
-png(filename = paste0(getwd(), "/outputs/figS4.png"), width = 17, height = 17, units = "cm", res = 600, pointsize = 8)
+png(filename = paste0(getwd(), "/outputs/figS5.png"), width = 17, height = 17, units = "cm", res = 600, pointsize = 8)
 corPlot(df = table_spatial_scores, method = "spearman", digits = 2, ties.method =  "average")
 dev.off()
 
@@ -744,7 +744,7 @@ tableS3$LexpPD <- c(NA,
 
 write.csv2(tableS3, paste0(getwd(), "/outputs/tableS3.csv"))
 
-### Figure S5 and S6 - Spatial patterns and hotspots of ---- FIX§§§
+### Figure S6 and S7 - Spatial patterns and hotspots of ---- 
 # species richness (a), 
 # threatened species richness (b), 
 # rare species richness (c), 
@@ -754,7 +754,7 @@ write.csv2(tableS3, paste0(getwd(), "/outputs/tableS3.csv"))
 # rare phylogenetic diversity (g),
 # and phylogenetic-weighted rarity (h) 
 
-## S5a
+## S6a
 richness <- raster(paste0(getwd(), "/outputs/Map_mammals_richness.grd"))
 cuts <- quantile(richness, c(0, 0.25, 0.50, 0.75, 0.90, 0.95, 0.975, 1))
 colors <- brewer.pal(9, "Greys")
@@ -767,9 +767,9 @@ richness.tm <- tm_shape(richness) +
             main.title = "(a) Species richness, 5477 species",
             main.title.size = 1, outer.margins = c(0, 0, 0, 0))
 richness.tm + coastline.tm 
-figS5a <- richness.tm + coastline.tm 
+figS6a <- richness.tm + coastline.tm 
 
-## S5b
+## S6b
 richness_threatened <- raster(paste0(getwd(), "/outputs/Map_mammals_threatened-richness.grd"))
 cuts <- quantile(richness_threatened, c(0, 0.1, 0.75, 0.90, 0.95, 0.975, 1))
 cuts
@@ -784,9 +784,9 @@ richness_threatened.tm <- tm_shape(richness_threatened) +
             main.title = "(b) Threatened species richness, 1193 species",
             main.title.size = 1, outer.margins = c(0, 0, 0, 0))
 richness_threatened.tm + coastline.tm 
-figS5b <- richness_threatened.tm + coastline.tm
+figS6b <- richness_threatened.tm + coastline.tm
 
-## S6bprop
+## S7bprop
 prop_richness_threatened <- raster(paste0(getwd(), "/outputs/Map_mammals_prop-richness-threatened.grd"))
 cuts <- quantile(prop_richness_threatened, c(0, 0.1, 0.75, 0.90, 0.95, 0.975, 1))
 cuts
@@ -801,9 +801,9 @@ prop_richness_threatened.tm <- tm_shape(prop_richness_threatened) +
             main.title = "(b) Proportion of threatened species, 1193 species",
             main.title.size = 1, outer.margins = c(0, 0, 0, 0))
 prop_richness_threatened.tm + coastline.tm 
-figS6b <- prop_richness_threatened.tm + coastline.tm
+figS7b <- prop_richness_threatened.tm + coastline.tm
 
-## S5c
+## S6c
 richness_rare <- raster(paste0(getwd(), "/outputs/Map_mammals_rare-richness.grd"))
 cuts <- quantile(richness_rare, c(0, 0.85, 0.90, 0.95, 0.975, 1))
 colors <- brewer.pal(9, "Greys")
@@ -816,9 +816,9 @@ richness_rare.tm <- tm_shape(richness_rare) +
             main.title = "(c) Rare species richness, 2736 species",
             main.title.size = 1, outer.margins = c(0, 0, 0, 0))
 richness_rare.tm + coastline.tm 
-figS5c <- richness_rare.tm + coastline.tm
+figS6c <- richness_rare.tm + coastline.tm
 
-## S6cprop
+## S7cprop
 prop_richness_rare <- raster(paste0(getwd(), "/outputs/Map_mammals_prop-richness-rare.grd"))
 cuts <- quantile(prop_richness_rare, c(0, 0.85, 0.90, 0.95, 0.975, 1))
 cuts
@@ -832,9 +832,9 @@ prop_richness_rare.tm <- tm_shape(prop_richness_rare) +
             main.title = "(c) Proportion of rare species, 2736 species",
             main.title.size = 1, outer.margins = c(0, 0, 0, 0))
 prop_richness_rare.tm + coastline.tm 
-figS6c <- prop_richness_rare.tm + coastline.tm
+figS7c <- prop_richness_rare.tm + coastline.tm
 
-## S5d
+## S6d
 weighted_rarity <- raster(paste0(getwd(), "/outputs/Map_mammals_weighted-rarity.grd"))
 cuts <- quantile(weighted_rarity, c(0, 0.9, 0.95, 0.975, 1))
 cuts
@@ -848,9 +848,9 @@ weighted_rarity.tm <- tm_shape(weighted_rarity) +
             main.title = "(d) Species-weighted rarity, 5477 species",
             main.title.size = 1, outer.margins = c(0, 0, 0, 0))
 weighted_rarity.tm + coastline.tm
-figS5d <- weighted_rarity.tm + coastline.tm
+figS6d <- weighted_rarity.tm + coastline.tm
 
-## S6dprop
+## S7dprop
 prop_weighted_rarity <- raster(paste0(getwd(), "/outputs/Map_mammals_mean-weighted-rarity.grd"))
 cuts <- quantile(prop_weighted_rarity, c(0, 0.9, 0.95, 0.975, 1))
 cuts
@@ -864,9 +864,9 @@ prop_weighted_rarity.tm <- tm_shape(prop_weighted_rarity) +
             main.title = "(d) Mean species-weighted rarity, 5477 species",
             main.title.size = 1, outer.margins = c(0, 0, 0, 0))
 prop_weighted_rarity.tm + coastline.tm 
-figS6d <- prop_weighted_rarity.tm + coastline.tm
+figS7d <- prop_weighted_rarity.tm + coastline.tm
 
-## S5e
+## S6e
 median_PD <- raster(paste0(getwd(), "/outputs/Map_mammals_median-PD.grd"))
 cuts <- quantile(median_PD, c(0, 0.5, 0.9, 0.95, 0.975, 1))
 cuts
@@ -880,9 +880,9 @@ median_PD.tm <- tm_shape(median_PD) +
             main.title = "(e) Phylogenetic diversity, 5477 species",
             main.title.size = 1, outer.margins = c(0, 0, 0, 0))
 median_PD.tm + coastline.tm 
-figS5e <- median_PD.tm + coastline.tm
+figS6e <- median_PD.tm + coastline.tm
 
-## S5f
+## S6f
 median_threatened_PD <- raster(paste0(getwd(), "/outputs/Map_mammals_median-threatened-PD.grd"))
 cuts <- quantile(median_threatened_PD, c(0, 0.1, 0.5, 0.9, 0.95, 0.975, 1))
 cuts
@@ -896,9 +896,9 @@ median_threatened_PD.tm <- tm_shape(median_threatened_PD) +
             main.title = "(f) Threatened phylogenetic diversity, 1193 species",
             main.title.size = 1, outer.margins = c(0, 0, 0, 0))
 median_threatened_PD.tm + coastline.tm 
-figS5f <- median_threatened_PD.tm + coastline.tm
+figS6f <- median_threatened_PD.tm + coastline.tm
 
-## S6fprop
+## S7fprop
 prop_median_threatened_PD <- raster(paste0(getwd(), "/outputs/Map_mammals_prop-threatened-PD.grd"))
 cuts <- quantile(prop_median_threatened_PD, c(0, 0.1, 0.5, 0.9, 0.95, 0.975, 1))
 cuts
@@ -912,9 +912,9 @@ prop_median_threatened_PD.tm <- tm_shape(prop_median_threatened_PD) +
             main.title = "(f) Proportion of threatened phylogenetic diversity, 1193 species",
             main.title.size = 1, outer.margins = c(0, 0, 0, 0))
 prop_median_threatened_PD.tm + coastline.tm 
-figS6f<- prop_median_threatened_PD.tm + coastline.tm
+figS7f<- prop_median_threatened_PD.tm + coastline.tm
 
-## S5g
+## S6g
 median_rare_PD <- raster(paste0(getwd(), "/outputs/Map_mammals_median-rare-PD.grd"))
 cuts <- quantile(median_rare_PD, c(0, 0.85, 0.9, 0.95, 0.975, 1))
 cuts
@@ -928,9 +928,9 @@ median_rare_PD.tm <- tm_shape(median_rare_PD) +
             main.title = "(g) Rare phylogenetic diversity, 2736 species",
             main.title.size = 1, outer.margins = c(0, 0, 0, 0))
 median_rare_PD.tm + coastline.tm 
-figS5g <- median_rare_PD.tm + coastline.tm 
+figS6g <- median_rare_PD.tm + coastline.tm 
 
-## S6gprop
+## S7gprop
 prop_median_rare_PD <- raster(paste0(getwd(), "/outputs/Map_mammals_prop-rare-PD.grd"))
 cuts <- quantile(prop_median_rare_PD, c(0, 0.85, 0.9, 0.95, 0.975, 1))
 cuts
@@ -944,9 +944,9 @@ prop_median_rare_PD.tm <- tm_shape(prop_median_rare_PD) +
             main.title = "(g) Proportion of rare phylogenetic diversity, 2736 species",
             main.title.size = 1, outer.margins = c(0, 0, 0, 0))
 prop_median_rare_PD.tm + coastline.tm 
-figS6g <- prop_median_rare_PD.tm + coastline.tm 
+figS7g <- prop_median_rare_PD.tm + coastline.tm 
 
-## S5h
+## S6h
 median_PWR <- raster(paste0(getwd(), "/outputs/Map_mammals_median-PWR.grd"))
 cuts <- quantile(median_PWR, c(0, 0.5, 0.9, 0.95, 0.975, 1))
 cuts
@@ -960,9 +960,9 @@ median_PWR.tm <- tm_shape(median_PWR) +
             main.title = "(h) Phylogenetic-weighted rarity, 5477 species",
             main.title.size = 1, outer.margins = c(0, 0, 0, 0))
 median_PWR.tm + coastline.tm
-figS5h <- median_PWR.tm + coastline.tm
+figS6h <- median_PWR.tm + coastline.tm
 
-## S6hprop
+## S7hprop
 prop_median_PWR <- raster(paste0(getwd(), "/outputs/Map_mammals_mean-PWR.grd"))
 cuts <- quantile(prop_median_PWR, c(0, 0.9, 0.95, 0.975, 1))
 cuts
@@ -976,18 +976,18 @@ prop_median_PWR.tm <- tm_shape(prop_median_PWR) +
             main.title = "(h) Mean phylogenetic-weighted rarity, 5477 species",
             main.title.size = 1, outer.margins = c(0, 0, 0, 0))
 prop_median_PWR.tm + coastline.tm
-figS6h <- prop_median_PWR.tm + coastline.tm
-
-## save Figure S5
-png(filename = paste0(getwd(), "/outputs/figS5.png"),
-    width = 17, height = 12, units = "cm", pointsize = 8, res = 600)
-multiplot(figS5a, figS5b, figS5c, figS5d, figS5e, figS5f, figS5g, figS5h, cols = 2)
-dev.off()
+figS7h <- prop_median_PWR.tm + coastline.tm
 
 ## save Figure S6
 png(filename = paste0(getwd(), "/outputs/figS6.png"),
     width = 17, height = 12, units = "cm", pointsize = 8, res = 600)
-multiplot(figS5a, figS6b, figS6c, figS6d, figS5e, figS6f, figS6g, figS6h, cols = 2)
+multiplot(figS6a, figS6b, figS6c, figS6d, figS6e, figS6f, figS6g, figS6h, cols = 2)
+dev.off()
+
+## save Figure S7
+png(filename = paste0(getwd(), "/outputs/figS7.png"),
+    width = 17, height = 12, units = "cm", pointsize = 8, res = 600)
+multiplot(figS6a, figS7b, figS7c, figS7d, figS6e, figS7f, figS7g, figS7h, cols = 2)
 dev.off()
 
 
@@ -1081,3 +1081,30 @@ length(species_topledge_phylacine_upham)/nrow(topledge_upham) *100 # 55 %
 species_ledgeupham_notledgephylacine <- setdiff(topledge_upham$species, topledge$species_phylacine)
 species_ledgeupham_notledgephylacine # 593 species TOP HEDGE UPHAM not in TOP HEDGE PHYLACINE
 ledgeupham_notledgephylacine <- topledge_upham[topledge_upham$species %in% species_ledgeupham_notledgephylacine,]
+
+### Figure S2 - HEDGE and LEDGE scores by category of extinction risk  ----
+mammals$Imputed.Status <- factor(mammals$Imputed.Status, levels = c("LC", "NT", "VU", "EN", "CR"))
+
+give.n <- function(x)
+  {
+  return(c(y = max(x)+1, label = length(x)))
+  }
+
+S2a <- ggplot(data = mammals, aes(y = log(hedge), x = Imputed.Status))
+S2a <- S2a + geom_boxplot() + xlab (label = "extinction risk") + ylab (label = "log(HEDGE) (Ma)") + 
+  ggtitle(label = "a) HEDGE scores by category of extinction risk") +
+  stat_summary(fun.data = give.n, geom = "text", vjust = 0, size = 3) +
+  theme(plot.title = element_text(size = 8), axis.title.x = element_text(size = 8) , axis.title.y = element_text(size = 8))
+S2a
+
+S2b <- ggplot(data = mammals, aes(y = log(ledge), x = Imputed.Status))
+S2b <- S2b + geom_boxplot() + xlab (label = "extinction risk") + ylab (label = "log(LEDGE) (Ma)") + 
+  ggtitle(label = "b) LEDGE scores by category of extinction risk") +
+  stat_summary(fun.data = give.n, geom = "text", vjust = 0, size = 3) +
+  theme(plot.title = element_text(size = 8), axis.title.x = element_text(size = 8) , axis.title.y = element_text(size = 8))
+S2b
+
+png(filename = paste0(getwd(), "/outputs/figS2.png"),
+    width = 17, height = 10, units = "cm", pointsize = 8, res = 600)
+multiplot(S2a, S2b, cols = 2)
+dev.off()
