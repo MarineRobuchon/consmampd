@@ -85,7 +85,7 @@ top10hedge$reverse <- c(10:1)
 
 plot <- ggplot(top10hedge, aes(x = species, y = hedge, fill = `Red List status`)) +
   geom_bar(stat = "identity", width = 0.75) +
-  scale_fill_manual(values = c("orange", "red")) +
+  scale_fill_manual(values = c("red", "orange")) +
   scale_x_discrete(labels = rev(c("1.0", "2.0", "3.0", "4.5", "4.5", "6.0", "7.0", "8.5", "8.5", "10.0"))) +
   geom_text(aes(label = species), position = position_stack(vjust = 0.5), fontface = "italic", size = 3) +
   labs(title = "(a) TOP 10 HEDGE species", 
@@ -153,10 +153,32 @@ ggsave(paste0(getwd(),"/outputs/fig2.png"), plot = multiplot(fig2a, fig2b, cols 
        width = 17, height = 25, units = "cm", dpi = 600, limitsize = TRUE)
 
 
-### Figure S4 - Pairwise correlations between EDGE, HEDGE and LEDGE scores ----
-png(filename = paste0(getwd(), "/outputs/figS4.png"), width = 17, height = 15, units = "cm", res = 600)
+### Figure S4 ----
+## Top - Pairwise correlations between EDGE, HEDGE and LEDGE scores 
+png(filename = paste0(getwd(), "/outputs/figS4top.png"), width = 17, height = 15, units = "cm", res = 600)
 corPlot(df = tableS1[, c("EDGE", "HEDGE", "LEDGE")], method = "spearman", digits = 2, ties.method =  "average")
 dev.off()
+
+## Bottom - Relation between EDGE and HEDGE ranks for the TOP 25% HEDGE species
+tophedge <- head(mammals[order(mammals$hedge_rank) ,], n = round(nrow(mammals)*25/100))
+levels(tophedge$Imputed.Status)
+tophedge$Imputed.Status <- factor(tophedge$Imputed.Status, levels = c("NT", "VU", "EN", "CR"))
+colnames(tophedge)[41] <- "Extinction.risk"
+
+tophedge[which(tophedge$EDGE_rank > 1400 & tophedge$hedge_rank<830),]
+
+figS4bottom <- ggplot(data = tophedge, aes(y = hedge_rank, x = EDGE_rank, color = Extinction.risk)) + 
+  geom_point(size = 0.5) + scale_x_continuous(name = "EDGE rank") + scale_y_continuous(name = "HEDGE_rank") +
+  annotate("point",  x = 1494, y = 820, size = 2, alpha = 0.5, color = "grey") +
+  scale_colour_manual(values = c("greenyellow", "yellow", "orange", "red")) +
+  geom_vline(xintercept = 1369, linetype ="dotted", 
+               color = "blue", size  = 1) +
+  theme_bw() 
+
+figS4bottom
+
+ggsave(paste0(getwd(),"/outputs/figS4bottom.png"), plot = figS4bottom, scale = 1, 
+       width = 17, height = 10, units = "cm", dpi = 600, limitsize = TRUE)
 
 ### Table S2 - Common species between TOP EDGE, TOP HEDGE, and TOP LEDGE ----
 # comparing TOP HEDGE and TOP EDGE
@@ -195,24 +217,16 @@ tableS2$LEDGE <- c(NA,
 
 write.csv2(tableS2, paste0(getwd(), "/outputs/tableS2.csv"))
 
-### Table S4 - TOP 25% HEDGE: conservation and introduction ----
+### Table S4 - TOP 25% HEDGE: conservation measures ----
 alldata_tophedge <- read.csv2(paste0(getwd(), "/outputs/mammals_tophedge_conservation_introduction.csv"))
-tableS4 <- unique(alldata_tophedge[, c("species_phylacine", "hedge_rank", "hedge", "conservation_classification", "introduced")])
+tableS4 <- unique(alldata_tophedge[, c("species_phylacine", "hedge_rank", "hedge", "conservation_classification")])
 tableS4 <- tableS4[order(tableS4$hedge_rank),]
-colnames(tableS4) <- c("species", "HEDGE_rank", "HEDGE", "conservation_classification", "introduced")
+colnames(tableS4) <- c("species", "HEDGE_rank", "HEDGE", "conservation_classification")
 write.csv2(tableS4, paste0(getwd(), "/outputs/tableS4.csv"))
 
 # species not protected
 tophedge_notprotected <- tableS4[tableS4$conservation_classification=="None",]
 nrow(tophedge_notprotected)/nrow(tophedge)*100
-
-# species introduced
-tophedge_introduced <- tableS4[tableS4$introduced=="yes",]
-nlevels(factor(tophedge_introduced$species))/nrow(tophedge)*100
-
-# species introduced AND on the list of Union concern
-concern <- read.csv2(paste0(getwd(), "/data/animal_species_Union-concern.csv"))
-intersect(gsub("_", " ", tophedge_introduced$species), concern$Scientific.name) # no tophedge species is on the list of Union concern
 
 # species by realm
 nrow(tophedge[tophedge$Marine=="1",])/nrow(mammals[mammals$Marine=="1",]) # 22% of marine mammals are TOP HEDGE
@@ -220,28 +234,16 @@ nrow(tophedge[tophedge$Terrestrial=="1",])/nrow(mammals[mammals$Terrestrial=="1"
 nrow(tophedge[tophedge$Freshwater=="1",])/nrow(mammals[mammals$Freshwater=="1",]) # 41% of freshwater mammals are TOP HEDGE
 nrow(tophedge[tophedge$Aerial=="1",])/nrow(mammals[mammals$Aerial=="1",]) # 18% of aerial mammals are TOP HEDGE
 
-### Table S5 - TOP 25% LEDGE: conservation and introduction ----
+### Table S5 - TOP 25% LEDGE: conservation measures ----
 alldata_topledge <- read.csv2(paste0(getwd(), "/outputs/mammals_topledge_conservation_introduction.csv"))
-tableS5 <- unique(alldata_topledge[, c("species_phylacine", "ledge_rank", "ledge", "conservation_classification", "introduced")])
+tableS5 <- unique(alldata_topledge[, c("species_phylacine", "ledge_rank", "ledge", "conservation_classification")])
 tableS5 <- tableS5[order(tableS5$ledge_rank),]
-colnames(tableS5) <- c("species", "LEDGE_rank", "LEDGE", "conservation_classification", "introduced")
+colnames(tableS5) <- c("species", "LEDGE_rank", "LEDGE", "conservation_classification")
 write.csv2(tableS5, paste0(getwd(), "/outputs/tableS5.csv"))
 
 # species not protected
 topledge_notprotected <- tableS5[tableS5$conservation_classification=="None",]
 nrow(topledge_notprotected)/nrow(topledge)*100
-
-# species introduced
-topledge_introduced <- tableS5[tableS5$introduced=="yes",]
-nlevels(factor(topledge_introduced$species))/nrow(topledge)*100
-
-# species introduced that belong to both TOP LEDGE and TOP HEDGE
-species_topledge_introduced <- unique(as.character(topledge_introduced$species)) # 34 species
-species_tophedge_introduced <- unique(as.character(tophedge_introduced$species)) # 31 species
-species_topledge_introduced[species_topledge_introduced %in% species_tophedge_introduced] # the 10 species species introduced that belong to both TOP LEDGE and TOP HEDGE
-
-# species introduced AND on the list of Union concern
-intersect(gsub("_", " ", topledge_introduced$species), concern$Scientific.name) # 2 top ledge species are on the list of Union concern
 
 # species by realm
 nrow(topledge[topledge$Marine=="1",])/nrow(mammals[mammals$Marine=="1",]) # 27% of marine mammals are TOP LEDGE
@@ -280,11 +282,9 @@ gg_conservation_tophedge$conservation <- factor(gg_conservation_tophedge$conserv
 tab_conservation_tophedge <- gg_conservation_tophedge %>% count (conservation, introduced, 
                                                                  sort = TRUE)
 # prepare the images
-hedge05 <-  rasterGrob(readPNG(paste0(getwd(), "/images/top10hedge/hedge05.png")), interpolate = TRUE)
-hedge103 <-  rasterGrob(readPNG(paste0(getwd(), "/images/introduced/hedge103.png")), interpolate = TRUE)
 hedge02 <- rasterGrob(readPNG(paste0(getwd(), "/images/top10hedge/hedge02.png")), interpolate = TRUE)
 # make the figure
-fig5a <- ggplot(tab_conservation_tophedge, aes(x = conservation, y = n, fill = introduced)) +
+fig5a <- ggplot(tab_conservation_tophedge, aes(x = conservation, y = n)) +
   geom_bar(stat = "identity") +
   scale_fill_manual(values = c("#2166ac", "#8c510a")) +
   labs(title = "(a) Conservation measures for species in the TOP 25% HEDGE", 
@@ -296,19 +296,9 @@ fig5a <- ggplot(tab_conservation_tophedge, aes(x = conservation, y = n, fill = i
         axis.title = element_text(size = 9),
         legend.title = element_text(size = 9),
         axis.text.y = element_text(angle = 15)) +
-  scale_y_continuous(limits = c(-550,1200), breaks = c(0, 250, 500, 750, 1000)) +
-  annotation_custom(hedge05, xmin = 6.5, xmax = 7.5, ymin = -Inf, ymax = -340) +
-  annotation_custom(hedge05, xmin = 5.5, xmax = 6.5, ymin = -Inf, ymax = -340) +
-  annotation_custom(hedge05, xmin = 3.5, xmax = 4.5, ymin = -Inf, ymax = -340) +
-  annotation_custom(hedge05, xmin = 2.5, xmax = 3.5, ymin = -Inf, ymax = -340) +
-  annotate("text", x = 7, y = -180, label = "Varecia\nvariegata", fontface = "italic", size = 2, col = "#8c510a") +
-  annotate("text", x = 6, y = -180, label = "Varecia\nvariegata", fontface = "italic", size = 2, col = "#8c510a") +
-  annotate("text", x = 4, y = -180, label = "Varecia\nvariegata", fontface = "italic", size = 2, col = "#8c510a") +
-  annotate("text", x = 3, y = -180, label = "Varecia\nvariegata", fontface = "italic", size = 2, col = "#8c510a") +
-  annotation_custom(hedge103, xmin = 4.5, xmax = 5.5, ymin = -Inf, ymax = -340) +
-  annotate("text", x = 5, y = -180, label = "Dasyprocta\nmexicana", fontface = "italic", size = 2, col = "#8c510a") +
+  scale_y_continuous(limits = c(0,1200), breaks = c(0, 250, 500, 750, 1000)) +
   annotation_custom(hedge02, xmin = 4.5, xmax = 5.5, ymin = 460, ymax = 660) +
-  annotate("text", x = 5, y = 780, label = "Mystacina\nrobusta", fontface = "italic", size = 2, col = "#2166ac")
+  annotate("text", x = 5, y = 780, label = "Mystacina\nrobusta", fontface = "italic", size = 3, col = "black")
 fig5a
 
 ## fig5b
@@ -337,11 +327,9 @@ gg_conservation_topledge$conservation <- factor(gg_conservation_topledge$conserv
 tab_conservation_topledge <- gg_conservation_topledge %>% count (conservation, introduced, 
                                                                  sort = TRUE)
 # prepare the images
-ledge14 <-  rasterGrob(readPNG(paste0(getwd(), "/images/introduced/ledge14.png")), interpolate = TRUE)
-ledge98 <-  rasterGrob(readPNG(paste0(getwd(), "/images/introduced/ledge98.png")), interpolate = TRUE)
 ledge01 <- rasterGrob(readPNG(paste0(getwd(), "/images/top10ledge/ledge01.png")), interpolate = TRUE)
 # make the figure
-fig5b <- ggplot(tab_conservation_topledge, aes(x = conservation, y = n, fill = introduced)) +
+fig5b <- ggplot(tab_conservation_topledge, aes(x = conservation, y = n)) +
   geom_bar(stat = "identity") +
   scale_fill_manual(values = c("#2166ac", "#8c510a")) +
   labs(title = "(b) Conservation measures for species in the TOP 25% LEDGE", 
@@ -353,18 +341,9 @@ fig5b <- ggplot(tab_conservation_topledge, aes(x = conservation, y = n, fill = i
         axis.title = element_text(size = 9),
         legend.title = element_text(size = 9),
         axis.text.y = element_text(angle = 15)) +
-  scale_y_continuous(limits = c(-550,1200), breaks = c(0, 250, 500, 750, 1000)) +
-  annotation_custom(ledge14, xmin = 4.5, xmax = 5.5, ymin = -Inf, ymax = -340) +
-  annotation_custom(ledge14, xmin = 5.5, xmax = 6.5, ymin = -Inf, ymax = -340) +
-  annotation_custom(ledge14, xmin = 3.5, xmax = 4.5, ymin = -Inf, ymax = -340) +
-  annotate("text", x = 5, y = -180, label = "Ornithorhynchus\nanatinus", fontface = "italic", size = 2, col = "#8c510a") +
-  annotate("text", x = 6, y = -180, label = "Ornithorhynchus\nanatinus", fontface = "italic", size = 2, col = "#8c510a") +
-  annotate("text", x = 4, y = -180, label = "Ornithorhynchus\nanatinus", fontface = "italic", size = 2, col = "#8c510a") +
-  annotation_custom(ledge98, xmin = 6.5, xmax = 7.5, ymin = -Inf, ymax = -340) +
-  annotate("text", x = 7, y = -180, label = "Myocastor\ncoypus", fontface = "italic", size = 2, col = "#8c510a") +
+  scale_y_continuous(limits = c(0,1200), breaks = c(0, 250, 500, 750, 1000)) +
   annotation_custom(ledge01, xmin = 6.5, xmax = 7.5, ymin = 750, ymax = 1000) +
-  annotate("text", x = 7, y = 1120, label = "Orycteropus\nafer", fontface = "italic", size = 2, col = "#2166ac")
-  
+  annotate("text", x = 7, y = 1120, label = "Orycteropus\nafer", fontface = "italic", size = 3, col = "black")
 fig5b
 
 ## save Figure 5
