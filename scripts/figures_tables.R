@@ -153,9 +153,9 @@ ggsave(paste0(getwd(),"/outputs/fig2.png"), plot = multiplot(fig2a, fig2b, cols 
        width = 17, height = 25, units = "cm", dpi = 600, limitsize = TRUE)
 
 
-### Figure S4 ----
+### Figure S5 ----
 ## Top - Pairwise correlations between EDGE, HEDGE and LEDGE scores 
-png(filename = paste0(getwd(), "/outputs/figS4top.png"), width = 17, height = 15, units = "cm", res = 600)
+png(filename = paste0(getwd(), "/outputs/figS5top.png"), width = 17, height = 15, units = "cm", res = 600)
 corPlot(df = tableS1[, c("EDGE", "HEDGE", "LEDGE")], method = "spearman", digits = 2, ties.method =  "average")
 dev.off()
 
@@ -167,7 +167,7 @@ colnames(tophedge)[41] <- "Extinction.risk"
 
 tophedge[which(tophedge$EDGE_rank > 1400 & tophedge$hedge_rank<830),]
 
-figS4bottom <- ggplot(data = tophedge, aes(y = hedge_rank, x = EDGE_rank, color = Extinction.risk)) + 
+figS5bottom <- ggplot(data = tophedge, aes(y = hedge_rank, x = EDGE_rank, color = Extinction.risk)) + 
   geom_point(size = 0.5) + scale_x_continuous(name = "EDGE rank") + scale_y_continuous(name = "HEDGE_rank") +
   annotate("point",  x = 1494, y = 820, size = 2, alpha = 0.5, color = "grey") +
   scale_colour_manual(values = c("greenyellow", "yellow", "orange", "red")) +
@@ -175,12 +175,12 @@ figS4bottom <- ggplot(data = tophedge, aes(y = hedge_rank, x = EDGE_rank, color 
                color = "blue", size  = 1) +
   theme_bw() 
 
-figS4bottom
+figS5bottom
 
-ggsave(paste0(getwd(),"/outputs/figS4bottom.png"), plot = figS4bottom, scale = 1, 
+ggsave(paste0(getwd(),"/outputs/figS5bottom.png"), plot = figS5bottom, scale = 1, 
        width = 17, height = 10, units = "cm", dpi = 600, limitsize = TRUE)
 
-### Table S2 - Common species between TOP EDGE, TOP HEDGE, and TOP LEDGE ----
+### Table S3 - Common species between TOP EDGE, TOP HEDGE, and TOP LEDGE ----
 # comparing TOP HEDGE and TOP EDGE
 tophedge <- head(mammals[order(mammals$hedge_rank) ,], n = round(nrow(mammals)*25/100))
 topedge <- head(mammals[order(mammals$EDGE_rank) ,], n = round(nrow(mammals)*25/100))
@@ -204,18 +204,18 @@ length(species_ledge_edge) # 422 common species
 length(species_ledge_edge)/nrow(topledge) *100 # 31 %
 ledge_edge <- topledge[topledge$species_phylacine %in% species_ledge_edge,]
 
-tableS2 <- data.frame(row.names = c("EDGE", "HEDGE", "LEDGE"))
-tableS2$EDGE <- c(100,
+tableS3 <- data.frame(row.names = c("EDGE", "HEDGE", "LEDGE"))
+tableS3$EDGE <- c(100,
                   length(species_hedge_edge)/nrow(tophedge)*100,
                   length(species_ledge_edge)/nrow(topledge)*100)
-tableS2$HEDGE <- c(NA,
+tableS3$HEDGE <- c(NA,
                    100,
                    length(species_ledge_hedge)/nrow(topledge)*100)
-tableS2$LEDGE <- c(NA,
+tableS3$LEDGE <- c(NA,
                    NA,
                    100)
 
-write.csv2(tableS2, paste0(getwd(), "/outputs/tableS2.csv"))
+write.csv2(tableS3, paste0(getwd(), "/outputs/tableS3.csv"))
 
 ### Table S4 - TOP 25% HEDGE: conservation measures ----
 alldata_tophedge <- read.csv2(paste0(getwd(), "/outputs/mammals_tophedge_conservation_introduction.csv"))
@@ -351,7 +351,7 @@ ggsave(paste0(getwd(),"/outputs/fig5.png"),
        plot = multiplot(fig5a, fig5b, cols = 1), scale = 1, width = 17, height = 17, units = "cm",
        dpi = 600, limitsize = TRUE)
 
-### Figures 3 and S3 - Spatial patterns and hotspots of ----
+### Figures 3 and S2 - Spatial patterns and hotspots of ----
 # the TOP 25% HEDGE species (a),
 # the TOP 25% LEDGE species (b)
 
@@ -377,7 +377,7 @@ coastline.tm <- tm_shape(coastline, projection = crs(richness_TOPHEDGE)) + tm_li
 richness_TOPHEDGE.tm + coastline.tm 
 fig3a <- richness_TOPHEDGE.tm + coastline.tm
 
-## S3aprop
+## S2aprop
 prop_richness_TOPHEDGE <- raster(paste0(getwd(), "/outputs/Map_mammals_prop-richness-TOPHEDGE.grd"))
 cuts <- quantile(prop_richness_TOPHEDGE, c(0, 0.1, 0.6, 0.90, 0.95, 0.975, 1))
 cuts
@@ -392,7 +392,7 @@ prop_richness_TOPHEDGE.tm <- tm_shape(prop_richness_TOPHEDGE) +
             main.title = "(a) Proportion of TOP 25% HEDGE species, 1369 species",
             main.title.size = 1, outer.margins = c(0, 0, 0, 0))
 prop_richness_TOPHEDGE.tm + coastline.tm 
-figS3aprop <- prop_richness_TOPHEDGE.tm + coastline.tm
+figS2aprop <- prop_richness_TOPHEDGE.tm + coastline.tm
 
 ## 3b
 richness_TOPLEDGE <- raster(paste0(getwd(), "/outputs/Map_mammals_richnessTOPLEDGE.grd"))
@@ -411,7 +411,7 @@ richness_TOPLEDGE.tm <- tm_shape(richness_TOPLEDGE) +
 richness_TOPLEDGE.tm + coastline.tm 
 fig3b <- richness_TOPLEDGE.tm + coastline.tm
 
-## S3bprop
+## S2bprop
 prop_richness_TOPLEDGE <- raster(paste0(getwd(), "/outputs/Map_mammals_prop-richness-TOPLEDGE.grd"))
 cuts <- quantile(prop_richness_TOPLEDGE, c(0, 0.1, 0.5, 0.9, 0.95, 0.975, 1))
 cuts
@@ -426,7 +426,7 @@ prop_richness_TOPLEDGE.tm <- tm_shape(prop_richness_TOPLEDGE) +
             main.title = "(b) Proportion of TOP 25% LEDGE species, 1369 species",
             main.title.size = 1, outer.margins = c(0, 0, 0, 0))
 prop_richness_TOPLEDGE.tm + coastline.tm 
-figS3bprop <- prop_richness_TOPLEDGE.tm + coastline.tm
+figS2bprop <- prop_richness_TOPLEDGE.tm + coastline.tm
 
 ## save Figure 3 
 png(filename = paste0(getwd(), "/outputs/fig3.png"),
@@ -434,10 +434,10 @@ png(filename = paste0(getwd(), "/outputs/fig3.png"),
 multiplot(fig3a, fig3b, cols = 1)
 dev.off()
 
-## save Figure S3
-png(filename = paste0(getwd(), "/outputs/figS3.png"),
+## save Figure S2
+png(filename = paste0(getwd(), "/outputs/figS2.png"),
     width = 13, height = 8, units = "cm", pointsize = 8, res = 600)
-multiplot(figS3aprop, figS3bprop, cols = 1)
+multiplot(figS2aprop, figS2bprop, cols = 1)
 dev.off()
 
 ### Figure 4 - Spatial patterns and hotspots of ----
@@ -482,7 +482,7 @@ png(filename = paste0(getwd(), "/outputs/fig4.png"),
 multiplot(fig4a, fig4b, cols = 1)
 dev.off()
 
-### Figure S5 - Pairwise correlations between the 12 spatial scores ----
+### Figure S4 - Pairwise correlations between the 12 spatial scores ----
 SR <- raster(paste0(getwd(), "/outputs/Map_mammals_richness"))
 TSR <- raster(paste0(getwd(), "/outputs/Map_mammals_threatened-richness"))
 RSR <- raster(paste0(getwd(), "/outputs/Map_mammals_rare-richness"))
@@ -501,11 +501,11 @@ table_spatial_scores <- data.frame(SR = getValues(SR), TSR = getValues(TSR), RSR
                                    HEDGE = getValues(HEDGE), LEDGE = getValues(abs(LEDGE)), GexpPD = getValues(GexpPD), LexpPD = getValues(abs(LexpPD)))
 head(table_spatial_scores)
 
-png(filename = paste0(getwd(), "/outputs/figS5.png"), width = 17, height = 17, units = "cm", res = 600, pointsize = 8)
+png(filename = paste0(getwd(), "/outputs/figS4.png"), width = 17, height = 17, units = "cm", res = 600, pointsize = 8)
 corPlot(df = table_spatial_scores, method = "spearman", digits = 2, ties.method =  "average")
 dev.off()
 
-### Table S3 - Common zones between hotspots for the 12 spatial scores ----
+### Table S2 - Common zones between hotspots for the 12 spatial scores ----
 SR_hotspots <- SR
 SR_hotspots[SR_hotspots < quantile(SR, 0.975)] <- 0
 SR_hotspots[SR_hotspots >= quantile(SR, 0.975)] <- 1
@@ -561,11 +561,11 @@ table_spatial_hotspots <- data.frame(SR = getValues(SR_hotspots), TSR = getValue
                                      HEDGE = getValues(HEDGE_hotspots), LEDGE = getValues(LEDGE_hotspots), 
                                      GexpPD = getValues(GexpPD_hotspots), LexpPD = getValues(LexpPD_hotspots))
 
-tableS3 <- data.frame(row.names = c("SR", "TSR", "RSR", "SWR",
+tableS2 <- data.frame(row.names = c("SR", "TSR", "RSR", "SWR",
                                     "PD", "TPD", "RPD", "PWR",
                                     "HEDGE", "LEDGE", "GexpPD", "LexpPD"))
 
-tableS3$SR <- c(100, 
+tableS2$SR <- c(100, 
                 nrow(table_spatial_hotspots[which(table_spatial_hotspots$SR == 1 & table_spatial_hotspots$TSR == 1) ,])/max(colSums(table_spatial_hotspots)[1], colSums(table_spatial_hotspots)[2])*100,
                 nrow(table_spatial_hotspots[which(table_spatial_hotspots$SR == 1 & table_spatial_hotspots$RSR == 1) ,])/max(colSums(table_spatial_hotspots)[1], colSums(table_spatial_hotspots)[3])*100,
                 nrow(table_spatial_hotspots[which(table_spatial_hotspots$SR == 1 & table_spatial_hotspots$SWR == 1) ,])/max(colSums(table_spatial_hotspots)[1], colSums(table_spatial_hotspots)[4])*100,
@@ -578,7 +578,7 @@ tableS3$SR <- c(100,
                 nrow(table_spatial_hotspots[which(table_spatial_hotspots$SR == 1 & table_spatial_hotspots$GexpPD == 1) ,])/max(colSums(table_spatial_hotspots)[1], colSums(table_spatial_hotspots)[11])*100,
                 nrow(table_spatial_hotspots[which(table_spatial_hotspots$SR == 1 & table_spatial_hotspots$LexpPD == 1) ,])/max(colSums(table_spatial_hotspots)[1], colSums(table_spatial_hotspots)[12])*100)
 
-tableS3$TSR <- c(NA, 
+tableS2$TSR <- c(NA, 
                  100,
                  nrow(table_spatial_hotspots[which(table_spatial_hotspots$TSR == 1 & table_spatial_hotspots$RSR == 1) ,])/max(colSums(table_spatial_hotspots)[2], colSums(table_spatial_hotspots)[3])*100,
                  nrow(table_spatial_hotspots[which(table_spatial_hotspots$TSR == 1 & table_spatial_hotspots$SWR == 1) ,])/max(colSums(table_spatial_hotspots)[2], colSums(table_spatial_hotspots)[4])*100,
@@ -591,7 +591,7 @@ tableS3$TSR <- c(NA,
                  nrow(table_spatial_hotspots[which(table_spatial_hotspots$TSR == 1 & table_spatial_hotspots$GexpPD == 1) ,])/max(colSums(table_spatial_hotspots)[2], colSums(table_spatial_hotspots)[11])*100,
                  nrow(table_spatial_hotspots[which(table_spatial_hotspots$TSR == 1 & table_spatial_hotspots$LexpPD == 1) ,])/max(colSums(table_spatial_hotspots)[2], colSums(table_spatial_hotspots)[12])*100)
 
-tableS3$RSR <- c(NA, 
+tableS2$RSR <- c(NA, 
                  NA,
                  100,
                  nrow(table_spatial_hotspots[which(table_spatial_hotspots$RSR == 1 & table_spatial_hotspots$SWR == 1) ,])/max(colSums(table_spatial_hotspots)[3], colSums(table_spatial_hotspots)[4])*100,
@@ -604,7 +604,7 @@ tableS3$RSR <- c(NA,
                  nrow(table_spatial_hotspots[which(table_spatial_hotspots$RSR == 1 & table_spatial_hotspots$GexpPD == 1) ,])/max(colSums(table_spatial_hotspots)[3], colSums(table_spatial_hotspots)[11])*100,
                  nrow(table_spatial_hotspots[which(table_spatial_hotspots$RSR == 1 & table_spatial_hotspots$LexpPD == 1) ,])/max(colSums(table_spatial_hotspots)[3], colSums(table_spatial_hotspots)[12])*100)
 
-tableS3$SWR <- c(NA, 
+tableS2$SWR <- c(NA, 
                  NA,
                  NA,
                  100,
@@ -617,7 +617,7 @@ tableS3$SWR <- c(NA,
                  nrow(table_spatial_hotspots[which(table_spatial_hotspots$SWR == 1 & table_spatial_hotspots$GexpPD == 1) ,])/max(colSums(table_spatial_hotspots)[4], colSums(table_spatial_hotspots)[11])*100,
                  nrow(table_spatial_hotspots[which(table_spatial_hotspots$SWR == 1 & table_spatial_hotspots$LexpPD == 1) ,])/max(colSums(table_spatial_hotspots)[4], colSums(table_spatial_hotspots)[12])*100)
 
-tableS3$PD <- c(NA, 
+tableS2$PD <- c(NA, 
                 NA,
                 NA,
                 NA,
@@ -630,7 +630,7 @@ tableS3$PD <- c(NA,
                 nrow(table_spatial_hotspots[which(table_spatial_hotspots$PD == 1 & table_spatial_hotspots$GexpPD == 1) ,])/max(colSums(table_spatial_hotspots)[5], colSums(table_spatial_hotspots)[11])*100,
                 nrow(table_spatial_hotspots[which(table_spatial_hotspots$PD == 1 & table_spatial_hotspots$LexpPD == 1) ,])/max(colSums(table_spatial_hotspots)[5], colSums(table_spatial_hotspots)[12])*100)
 
-tableS3$TPD <- c(NA, 
+tableS2$TPD <- c(NA, 
                  NA,
                  NA,
                  NA,
@@ -643,7 +643,7 @@ tableS3$TPD <- c(NA,
                  nrow(table_spatial_hotspots[which(table_spatial_hotspots$TPD == 1 & table_spatial_hotspots$GexpPD == 1) ,])/max(colSums(table_spatial_hotspots)[6], colSums(table_spatial_hotspots)[11])*100,
                  nrow(table_spatial_hotspots[which(table_spatial_hotspots$TPD == 1 & table_spatial_hotspots$LexpPD == 1) ,])/max(colSums(table_spatial_hotspots)[6], colSums(table_spatial_hotspots)[12])*100)
 
-tableS3$RPD <- c(NA, 
+tableS2$RPD <- c(NA, 
                  NA,
                  NA,
                  NA,
@@ -656,7 +656,7 @@ tableS3$RPD <- c(NA,
                  nrow(table_spatial_hotspots[which(table_spatial_hotspots$RPD == 1 & table_spatial_hotspots$GexpPD == 1) ,])/max(colSums(table_spatial_hotspots)[7], colSums(table_spatial_hotspots)[11])*100,
                  nrow(table_spatial_hotspots[which(table_spatial_hotspots$RPD == 1 & table_spatial_hotspots$LexpPD == 1) ,])/max(colSums(table_spatial_hotspots)[7], colSums(table_spatial_hotspots)[12])*100)
 
-tableS3$PWR <- c(NA, 
+tableS2$PWR <- c(NA, 
                  NA,
                  NA,
                  NA,
@@ -669,7 +669,7 @@ tableS3$PWR <- c(NA,
                  nrow(table_spatial_hotspots[which(table_spatial_hotspots$PWR == 1 & table_spatial_hotspots$GexpPD == 1) ,])/max(colSums(table_spatial_hotspots)[8], colSums(table_spatial_hotspots)[11])*100,
                  nrow(table_spatial_hotspots[which(table_spatial_hotspots$PWR == 1 & table_spatial_hotspots$LexpPD == 1) ,])/max(colSums(table_spatial_hotspots)[8], colSums(table_spatial_hotspots)[12])*100)
 
-tableS3$HEDGE <- c(NA, 
+tableS2$HEDGE <- c(NA, 
                    NA,
                    NA,
                    NA,
@@ -682,7 +682,7 @@ tableS3$HEDGE <- c(NA,
                    nrow(table_spatial_hotspots[which(table_spatial_hotspots$HEDGE == 1 & table_spatial_hotspots$GexpPD == 1) ,])/max(colSums(table_spatial_hotspots)[9], colSums(table_spatial_hotspots)[11])*100,
                    nrow(table_spatial_hotspots[which(table_spatial_hotspots$HEDGE == 1 & table_spatial_hotspots$LexpPD == 1) ,])/max(colSums(table_spatial_hotspots)[9], colSums(table_spatial_hotspots)[12])*100)
 
-tableS3$LEDGE <- c(NA, 
+tableS2$LEDGE <- c(NA, 
                    NA,
                    NA,
                    NA,
@@ -695,7 +695,7 @@ tableS3$LEDGE <- c(NA,
                    nrow(table_spatial_hotspots[which(table_spatial_hotspots$LEDGE == 1 & table_spatial_hotspots$GexpPD == 1) ,])/max(colSums(table_spatial_hotspots)[10], colSums(table_spatial_hotspots)[11])*100,
                    nrow(table_spatial_hotspots[which(table_spatial_hotspots$LEDGE == 1 & table_spatial_hotspots$LexpPD == 1) ,])/max(colSums(table_spatial_hotspots)[10], colSums(table_spatial_hotspots)[12])*100)
 
-tableS3$GexpPD <- c(NA, 
+tableS2$GexpPD <- c(NA, 
                     NA,
                     NA,
                     NA,
@@ -708,7 +708,7 @@ tableS3$GexpPD <- c(NA,
                     100,
                     nrow(table_spatial_hotspots[which(table_spatial_hotspots$GexpPD == 1 & table_spatial_hotspots$LexpPD == 1) ,])/max(colSums(table_spatial_hotspots)[11], colSums(table_spatial_hotspots)[12])*100)
 
-tableS3$LexpPD <- c(NA, 
+tableS2$LexpPD <- c(NA, 
                     NA,
                     NA,
                     NA,
@@ -721,7 +721,7 @@ tableS3$LexpPD <- c(NA,
                     NA,
                     100)
 
-write.csv2(tableS3, paste0(getwd(), "/outputs/tableS3.csv"))
+write.csv2(tableS2, paste0(getwd(), "/outputs/tableS2.csv"))
 
 ### Figure S6 and S7 - Spatial patterns and hotspots of ---- 
 # species richness (a), 
@@ -1061,7 +1061,7 @@ species_ledgeupham_notledgephylacine <- setdiff(topledge_upham$species, topledge
 species_ledgeupham_notledgephylacine # 593 species TOP HEDGE UPHAM not in TOP HEDGE PHYLACINE
 ledgeupham_notledgephylacine <- topledge_upham[topledge_upham$species %in% species_ledgeupham_notledgephylacine,]
 
-### Figure S2 - HEDGE and LEDGE scores by category of extinction risk  ----
+### Figure S3 - HEDGE and LEDGE scores by category of extinction risk  ----
 mammals$Imputed.Status <- factor(mammals$Imputed.Status, levels = c("LC", "NT", "VU", "EN", "CR"))
 
 give.n <- function(x)
@@ -1069,21 +1069,21 @@ give.n <- function(x)
   return(c(y = max(x)+1, label = length(x)))
   }
 
-S2a <- ggplot(data = mammals, aes(y = log(hedge), x = Imputed.Status))
-S2a <- S2a + geom_boxplot() + xlab (label = "extinction risk") + ylab (label = "log(HEDGE) (Ma)") + 
+S3a <- ggplot(data = mammals, aes(y = log(hedge), x = Imputed.Status))
+S3a <- S3a + geom_boxplot() + xlab (label = "extinction risk") + ylab (label = "log(HEDGE) (Ma)") + 
   ggtitle(label = "a) HEDGE scores by category of extinction risk") +
   stat_summary(fun.data = give.n, geom = "text", vjust = 0, size = 3) +
   theme(plot.title = element_text(size = 8), axis.title.x = element_text(size = 8) , axis.title.y = element_text(size = 8))
-S2a
+S3a
 
-S2b <- ggplot(data = mammals, aes(y = log(ledge), x = Imputed.Status))
-S2b <- S2b + geom_boxplot() + xlab (label = "extinction risk") + ylab (label = "log(LEDGE) (Ma)") + 
+S3b <- ggplot(data = mammals, aes(y = log(ledge), x = Imputed.Status))
+S3b <- S3b + geom_boxplot() + xlab (label = "extinction risk") + ylab (label = "log(LEDGE) (Ma)") + 
   ggtitle(label = "b) LEDGE scores by category of extinction risk") +
   stat_summary(fun.data = give.n, geom = "text", vjust = 0, size = 3) +
   theme(plot.title = element_text(size = 8), axis.title.x = element_text(size = 8) , axis.title.y = element_text(size = 8))
-S2b
+S3b
 
-png(filename = paste0(getwd(), "/outputs/figS2.png"),
+png(filename = paste0(getwd(), "/outputs/figS3.png"),
     width = 17, height = 10, units = "cm", pointsize = 8, res = 600)
-multiplot(S2a, S2b, cols = 2)
+multiplot(S3a, S3b, cols = 2)
 dev.off()
