@@ -186,7 +186,7 @@ cellval <- function(cell.presab,
 
 ### function 'corPlot' to plot pairwise correlations between variables
 ### modified from the function of the same name in the R package Rarity
-corPlot <- function(df, method = "spearman", digits = 2, na.action = "keep", ties.method = "average",
+corPlot <- function(df, method = "spearman", digits = 2, textsize = 1, na.action = "keep", ties.method = "average",
                     title = "", xlab = "variable.name", ylab = "variable.name", ...)
 {
   rankDf <- apply(df, 2, .rankings, ties.method = ties.method, na.action = na.action)
@@ -207,8 +207,8 @@ corPlot <- function(df, method = "spearman", digits = 2, na.action = "keep", tie
     icsup <- NULL
     for (j in 1:ncol(df))
     {
-      r <- c(r, cor.test(df[, i], df[, j], method = method)$estimate)
-      p <- c(p, cor.test(df[, i], df[, j], method = method)$p.value)
+      r <- c(r, cor.test(df[, i], df[, j], method = method, exact = FALSE)$estimate)
+      p <- c(p, cor.test(df[, i], df[, j], method = method, exact = FALSE)$p.value)
       if (method == "spearman")
       {
       icinf <- c(icinf, spearman.ci(df[, i], df[, j], nrep = 1000, conf.level = 0.95)$conf.int[1])
@@ -259,8 +259,9 @@ corPlot <- function(df, method = "spearman", digits = 2, na.action = "keep", tie
           text(x = 1, y = 1, paste(formatC(crossCongR[i, j], format = "f", digits = digits), 
                                    "\ninf = ", formatC(crossCongICINF[i, j], format = "f", digits = digits),
                                    "\nsup = ", formatC(crossCongICSUP[i, j], format = "f", digits = digits),
-                                   if(crossCongP[i, j] < 0.0001) {"\np < 0.0001"}
-                                   else {paste0("\np = ",formatC(crossCongP[i, j], format = "f"))}), font = 2)
+                                   "\np = ", formatC(crossCongP[i, j], format = "g")), font = 2, cex = textsize)
+                                    # if(crossCongP[i, j] < 0.0001) {"\np < 0.0001"}
+                                    # else {paste0("\np = ",formatC(crossCongP[i, j], format = "f"))}), font = 2)
         } else
         {
           if (length(ylab) > 1)

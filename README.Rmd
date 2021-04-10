@@ -89,23 +89,23 @@ This folder contains the outputs of the analyses and you should be able to gener
 + Map_mammals_prop-richness-TOPHEDGE.grd, .gri (gridded map of the proportion of TOP 25% HEDGE species)
 + Map_mammals_prop-richness-TOPLEDGE.grd, .gri (gridded map of the proportion of TOP 25% LEDGE species)
 + tableS1.csv (Table S1 of the paper)
-+ fig2.png (Figure 2 of the paper)
-+ figS5top.png (Figure S5 of the paper - top part)
-+ figS5bottom.png (Figure S5 of the paper - bottom part)
++ fig2.png, .pdf (Figure 2 of the paper)
++ figS5top.png, .pdf (Figure S5 of the paper - top part)
++ figS5bottom.png, .pdf (Figure S5 of the paper - bottom part)
 + tableS3.csv (Table S3 of the paper)
 + tableS4.csv (Table S4 of the paper)
 + tableS5.csv (Table S5 of the paper)
-+ fig5.png (Figure 5 of the paper)
-+ fig3.png (Figure 3 of the paper)
-+ figS2.png (Figure S2 of the paper)
-+ fig4.png (Figure 4 of the paper)
-+ figS4.png (Figure S4 of the paper)
++ fig5.png, .pdf (Figure 5 of the paper)
++ fig3.png, .pdf (Figure 3 of the paper)
++ figS2.png, .pdf (Figure S2 of the paper)
++ fig4.png, .pdf (Figure 4 of the paper)
++ figS4.png, .pdf (Figure S4 of the paper)
 + tableS2.csv (Table S2 of the paper)
-+ figS6.png (Figure S6 of the paper)
-+ figS7.png (Figure S7 of the paper)
-+ fig6.png (Figure 6 of the paper)
-+ figS1.png (Figure S1 of the paper)
-+ figS3.png (Figure S3 of the paper)
++ figS6.png, .pdf (Figure S6 of the paper)
++ figS7.png, .pdf (Figure S7 of the paper)
++ fig6.png, .pdf (Figure 6 of the paper)
++ figS1.png, .pdf (Figure S1 of the paper)
++ figS3.png, .pdf (Figure S3 of the paper)
 
 ## 2. Requirements
 Before starting the analyses, make sure to follow the three requirements described below.
@@ -116,7 +116,7 @@ Clone this repository in your R working directory on your computer. This will cr
 ### 2.2. download data
 Go to https://datadryad.org/stash/dataset/doi:10.5061/dryad.bp26v20 and download data. Decompress the downloaded archive folder into the folder "requireddata". Repeat the operation for the .zip file "Current".
 
-Go to https://www.iucnredlist.org/resources/spatial-data-download and download the "Mammals" dataset. Decompress the downloaded archive folder into the folder "requireddata". Note that by doing this, you will access shapefiles of mammal species distributions from the latest available IUCN version, and so it may slightly differ from the 2019-2 version used for the analyses in the paper.
+Go to https://www.iucnredlist.org/resources/spatial-data-download and download the "Mammals" dataset. Decompress the downloaded archive folder into the folder "requireddata". Note that by doing this, you will access shapefiles of mammal species distributions from the latest available IUCN version, and so it may slightly differ from the 2019-2 version used for the analyses in the paper. Alternatively, the 2019-2 version used for the analyses in the paper is available upon request to the corresponding author and with permission from IUCN.
 
 Go to https://data.vertlife.org/, and download the archive "Completed_5911sp_topoCons_NDexp" (under "mammaltree"). Decompress the downloaded archive folder into the folder "requireddata".
 

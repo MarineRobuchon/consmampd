@@ -76,8 +76,7 @@ top10hedge$species[7] <- "Dicerorhinus\nsumatrensis"
 top10hedge$species[8] <- "Solenodon\ncubanus"
 top10hedge$species[9] <- "Solenodon\nparadoxus"
 colnames(top10hedge)[4] <- "Red List status"
-top10hedge$`Red List status` <- factor(top10hedge$`Red List status`)
-levels(top10hedge$`Red List status`) <- c("EN", "CR")
+top10hedge$`Red List status` <- factor(top10hedge$`Red List status`, levels = c("EN", "CR"))
 top10hedge$species <- factor(top10hedge$species, levels = top10hedge$species)
 top10hedge$species <- factor(top10hedge$species, levels = rev(levels(top10hedge$species)))
 top10hedge$images <- list.files(path = paste0(getwd(), "/images/top10hedge"), full.names = TRUE)
@@ -85,7 +84,7 @@ top10hedge$reverse <- c(10:1)
 
 plot <- ggplot(top10hedge, aes(x = species, y = hedge, fill = `Red List status`)) +
   geom_bar(stat = "identity", width = 0.75) +
-  scale_fill_manual(values = c("red", "orange")) +
+  scale_fill_manual(values = c("orange", "red")) +
   scale_x_discrete(labels = rev(c("1.0", "2.0", "3.0", "4.5", "4.5", "6.0", "7.0", "8.5", "8.5", "10.0"))) +
   geom_text(aes(label = species), position = position_stack(vjust = 0.5), fontface = "italic", size = 3) +
   labs(title = "(a) TOP 10 HEDGE species", 
@@ -93,7 +92,7 @@ plot <- ggplot(top10hedge, aes(x = species, y = hedge, fill = `Red List status`)
   coord_flip() +
   theme_bw() +
   theme(plot.margin = margin(0.25, 0.25, 0.25, 0.25, "cm"),
-        plot.title = element_text(size = 10),
+        plot.title = element_text(size = 10, face = "bold"),
         axis.title = element_text(size = 9),
         legend.title = element_text(size = 9)) +
   scale_y_continuous(limits = c(0,85))
@@ -115,8 +114,7 @@ top10ledge <- mammals[mammals$ledge_rank < 11 , c("species_phylacine", "ledge", 
 top10ledge <- top10ledge[order(top10ledge$ledge_rank),]
 top10ledge$species <- gsub("_", " ", top10ledge$species_phylacine)
 colnames(top10ledge)[4] <- "Red List status"
-top10ledge$`Red List status` <- factor(top10ledge$`Red List status`)
-levels(top10ledge$`Red List status`) <- c("LC", "NT", "VU")
+top10ledge$`Red List status` <- factor(top10ledge$`Red List status`, levels = c("LC", "NT", "VU"))
 top10ledge$species <- factor(top10ledge$species, levels = top10ledge$species)
 top10ledge$species <- factor(top10ledge$species, levels = rev(levels(top10ledge$species)))
 top10ledge$images <- list.files(path = paste0(getwd(), "/images/top10ledge"), full.names = TRUE)
@@ -132,7 +130,7 @@ plot <- ggplot(top10ledge, aes(x = species, y = ledge, fill = `Red List status`)
   coord_flip() +
   theme_bw() +
   theme(plot.margin = margin(0.25, 0.25, 0.25, 0.25, "cm"),
-        plot.title = element_text(size = 10),
+        plot.title = element_text(size = 10, face = "bold"),
         axis.title = element_text(size = 9),
         legend.title = element_text(size = 9)) +
   scale_y_continuous(limits = c(0,85)) 
@@ -151,6 +149,8 @@ fig2b
 ## save Figure 2
 ggsave(paste0(getwd(),"/outputs/fig2.png"), plot = multiplot(fig2a, fig2b, cols = 1), scale = 1, 
        width = 17, height = 25, units = "cm", dpi = 600, limitsize = TRUE)
+ggsave(paste0(getwd(),"/outputs/fig2.pdf"), plot = multiplot(fig2a, fig2b, cols = 1), scale = 1, 
+       width = 17, height = 25, units = "cm", dpi = 600, limitsize = TRUE)
 
 
 ### Figure S5 ----
@@ -158,6 +158,11 @@ ggsave(paste0(getwd(),"/outputs/fig2.png"), plot = multiplot(fig2a, fig2b, cols 
 png(filename = paste0(getwd(), "/outputs/figS5top.png"), width = 17, height = 15, units = "cm", res = 600)
 corPlot(df = tableS1[, c("EDGE", "HEDGE", "LEDGE")], method = "spearman", digits = 2, ties.method =  "average")
 dev.off()
+
+pdf(file = paste0(getwd(), "/outputs/figS5top.pdf"), width = 6.7, height = 5.9)
+corPlot(df = tableS1[, c("EDGE", "HEDGE", "LEDGE")], method = "spearman", digits = 2, ties.method =  "average")
+dev.off()
+
 
 ## Bottom - Relation between EDGE and HEDGE ranks for the TOP 25% HEDGE species
 tophedge <- head(mammals[order(mammals$hedge_rank) ,], n = round(nrow(mammals)*25/100))
@@ -178,6 +183,8 @@ figS5bottom <- ggplot(data = tophedge, aes(y = hedge_rank, x = EDGE_rank, color 
 figS5bottom
 
 ggsave(paste0(getwd(),"/outputs/figS5bottom.png"), plot = figS5bottom, scale = 1, 
+       width = 17, height = 10, units = "cm", dpi = 600, limitsize = TRUE)
+ggsave(paste0(getwd(),"/outputs/figS5bottom.pdf"), plot = figS5bottom, scale = 1, 
        width = 17, height = 10, units = "cm", dpi = 600, limitsize = TRUE)
 
 ### Table S3 - Common species between TOP EDGE, TOP HEDGE, and TOP LEDGE ----
@@ -292,7 +299,7 @@ fig5a <- ggplot(tab_conservation_tophedge, aes(x = conservation, y = n)) +
   coord_flip(clip = "off") +
   theme_bw() +
   theme(plot.margin = margin(0.25, 0.25, 0.25, 0.25, "cm"),
-        plot.title = element_text(size = 10),
+        plot.title = element_text(size = 10, face = "bold"),
         axis.title = element_text(size = 9),
         legend.title = element_text(size = 9),
         axis.text.y = element_text(angle = 15)) +
@@ -337,7 +344,7 @@ fig5b <- ggplot(tab_conservation_topledge, aes(x = conservation, y = n)) +
   coord_flip(clip = "off") +
   theme_bw() +
   theme(plot.margin = margin(0.25, 0.25, 0.25, 0.25, "cm"),
-        plot.title = element_text(size = 10),
+        plot.title = element_text(size = 10, face = "bold"),
         axis.title = element_text(size = 9),
         legend.title = element_text(size = 9),
         axis.text.y = element_text(angle = 15)) +
@@ -348,6 +355,9 @@ fig5b
 
 ## save Figure 5
 ggsave(paste0(getwd(),"/outputs/fig5.png"), 
+       plot = multiplot(fig5a, fig5b, cols = 1), scale = 1, width = 17, height = 17, units = "cm",
+       dpi = 600, limitsize = TRUE)
+ggsave(paste0(getwd(),"/outputs/fig5.pdf"), 
        plot = multiplot(fig5a, fig5b, cols = 1), scale = 1, width = 17, height = 17, units = "cm",
        dpi = 600, limitsize = TRUE)
 
@@ -368,6 +378,7 @@ richness_TOPHEDGE.tm <- tm_shape(richness_TOPHEDGE) +
              labels = c("0", "1-3", "4-5","6-7", "8-9", "10-42")) +
   tm_layout(legend.outside = TRUE, legend.outside.position = "right",
             main.title = "(a) TOP 25% HEDGE species, 1369 species",
+            main.title.fontface = "bold",
             main.title.size = 1, outer.margins = c(0, 0, 0, 0))
 
 # load and transform the coastline spatial file
@@ -390,6 +401,7 @@ prop_richness_TOPHEDGE.tm <- tm_shape(prop_richness_TOPHEDGE) +
              labels = c("0-3.2", "3.3-14.9", "15.0-20.1","20.2-24.9", "25.0-29.3", "29.4-66.7")) +
   tm_layout(legend.outside = TRUE, legend.outside.position = "right",
             main.title = "(a) Proportion of TOP 25% HEDGE species, 1369 species",
+            main.title.fontface = "bold",
             main.title.size = 1, outer.margins = c(0, 0, 0, 0))
 prop_richness_TOPHEDGE.tm + coastline.tm 
 figS2aprop <- prop_richness_TOPHEDGE.tm + coastline.tm
@@ -407,6 +419,7 @@ richness_TOPLEDGE.tm <- tm_shape(richness_TOPLEDGE) +
              labels = c("0-5", "6-7", "8-25", "26-40", "41-53", "54-98")) +
   tm_layout(legend.outside = TRUE, legend.outside.position = "right",
             main.title = "(b) TOP 25% LEDGE species, 1369 species",
+            main.title.fontface = "bold",
             main.title.size = 1, outer.margins = c(0, 0, 0, 0))
 richness_TOPLEDGE.tm + coastline.tm 
 fig3b <- richness_TOPLEDGE.tm + coastline.tm
@@ -424,6 +437,7 @@ prop_richness_TOPLEDGE.tm <- tm_shape(prop_richness_TOPLEDGE) +
              labels = c("0-27.7", "27.8-34.5", "34.6-43.8", "43.9-47.3", "47.4-49.9", "50.0-100.0")) +
   tm_layout(legend.outside = TRUE, legend.outside.position = "right",
             main.title = "(b) Proportion of TOP 25% LEDGE species, 1369 species",
+            main.title.fontface = "bold",
             main.title.size = 1, outer.margins = c(0, 0, 0, 0))
 prop_richness_TOPLEDGE.tm + coastline.tm 
 figS2bprop <- prop_richness_TOPLEDGE.tm + coastline.tm
@@ -434,9 +448,19 @@ png(filename = paste0(getwd(), "/outputs/fig3.png"),
 multiplot(fig3a, fig3b, cols = 1)
 dev.off()
 
+pdf(file = paste0(getwd(), "/outputs/fig3.pdf"),
+    width = 5.1, height = 3.1, pointsize = 8)
+multiplot(fig3a, fig3b, cols = 1)
+dev.off()
+
 ## save Figure S2
 png(filename = paste0(getwd(), "/outputs/figS2.png"),
     width = 13, height = 8, units = "cm", pointsize = 8, res = 600)
+multiplot(figS2aprop, figS2bprop, cols = 1)
+dev.off()
+
+pdf(file = paste0(getwd(), "/outputs/figS2.pdf"),
+    width = 5.1, height = 3.1, pointsize = 8)
 multiplot(figS2aprop, figS2bprop, cols = 1)
 dev.off()
 
@@ -455,8 +479,9 @@ median_GexpPD_p0.tm <- tm_shape(median_GexpPD_p0) +
   tm_raster (palette = colors, style = "fixed", title = "Evolutionary history (Ma)",
              breaks = cuts, labels = c("0-0.4", "0.5-5.4", "5.5-7.9", "8.0-12.0", "12.1-17.2", "17.3-78.4")) +
   tm_layout(legend.outside = TRUE, legend.outside.position = "right",
-            main.title = "(a) Gain in expected phylogenetic diversity if all species present in the cell are saved from extinction",
-            main.title.size = 1, outer.margins = c(0, 0, 0, 0))
+            main.title = "(a) Gain in global expected phylogenetic diversity if all species present in the cell are saved from extinction",
+            main.title.fontface = "bold",
+            main.title.size = 0.89, outer.margins = c(0, 0, 0, 0))
 median_GexpPD_p0.tm + coastline.tm 
 fig4a <- median_GexpPD_p0.tm + coastline.tm 
 
@@ -471,14 +496,20 @@ median_LexpPD_p1.tm <- tm_shape(abs(median_LexpPD_p1)) +
   tm_raster (palette = colors, style = "fixed", title = "Evolutionary history (Ma)",
              breaks = cuts, labels = c("1.2-87.8", "87.9-105.6", "105.7-310.7", "310.8-532.9", "533.0-696.2", "696.3-1172.0")) +
   tm_layout(legend.outside = TRUE, legend.outside.position = "right",
-            main.title = "(b) Loss in expected phylogenetic diversity if all species present in the cell become extinct",
-            main.title.size = 1, outer.margins = c(0, 0, 0, 0))
+            main.title = "(b) Loss in global expected phylogenetic diversity if all species present in the cell become extinct",
+            main.title.fontface = "bold",
+            main.title.size = 0.89, outer.margins = c(0, 0, 0, 0))
 median_LexpPD_p1.tm + coastline.tm 
 fig4b <- median_LexpPD_p1.tm + coastline.tm 
 
 ## Save Figure 4
 png(filename = paste0(getwd(), "/outputs/fig4.png"),
     width = 13, height = 8, units = "cm", pointsize = 8, res = 600)
+multiplot(fig4a, fig4b, cols = 1)
+dev.off()
+
+pdf(file = paste0(getwd(), "/outputs/fig4.pdf"),
+    width = 5.1, height = 3.1, pointsize = 8)
 multiplot(fig4a, fig4b, cols = 1)
 dev.off()
 
@@ -502,7 +533,11 @@ table_spatial_scores <- data.frame(SR = getValues(SR), TSR = getValues(TSR), RSR
 head(table_spatial_scores)
 
 png(filename = paste0(getwd(), "/outputs/figS4.png"), width = 17, height = 17, units = "cm", res = 600, pointsize = 8)
-corPlot(df = table_spatial_scores, method = "spearman", digits = 2, ties.method =  "average")
+corPlot(df = table_spatial_scores, method = "spearman", digits = 2, textsize = 0.75, ties.method =  "average")
+dev.off()
+
+pdf(file = paste0(getwd(), "/outputs/figS4.pdf"), width = 6.7, height = 6.7, pointsize = 8)
+corPlot(df = table_spatial_scores, method = "spearman", digits = 2, textsize = 0.75, ties.method =  "average")
 dev.off()
 
 ### Table S2 - Common zones between hotspots for the 12 spatial scores ----
@@ -744,6 +779,7 @@ richness.tm <- tm_shape(richness) +
              labels = c("1-20", "21-22", "23-32", "33-72", "73-119", "120-148", "149-242")) +
   tm_layout(legend.outside = TRUE, legend.outside.position = "right",
             main.title = "(a) Species richness, 5477 species",
+            main.title.fontface = "bold",
             main.title.size = 1, outer.margins = c(0, 0, 0, 0))
 richness.tm + coastline.tm 
 figS6a <- richness.tm + coastline.tm 
@@ -761,6 +797,7 @@ richness_threatened.tm <- tm_shape(richness_threatened) +
              labels = c("0", "1-3", "4-5", "6-7", "8-10", "11-44")) +
   tm_layout(legend.outside = TRUE, legend.outside.position = "right",
             main.title = "(b) Threatened species richness, 1193 species",
+            main.title.fontface = "bold",
             main.title.size = 1, outer.margins = c(0, 0, 0, 0))
 richness_threatened.tm + coastline.tm 
 figS6b <- richness_threatened.tm + coastline.tm
@@ -778,6 +815,7 @@ prop_richness_threatened.tm <- tm_shape(prop_richness_threatened) +
              labels = c("0-3", "4-17", "18-20", "21-27", "28-32", "33-100")) +
   tm_layout(legend.outside = TRUE, legend.outside.position = "right",
             main.title = "(b) Proportion of threatened species, 1193 species",
+            main.title.fontface = "bold",
             main.title.size = 1, outer.margins = c(0, 0, 0, 0))
 prop_richness_threatened.tm + coastline.tm 
 figS7b <- prop_richness_threatened.tm + coastline.tm
@@ -793,6 +831,7 @@ richness_rare.tm <- tm_shape(richness_rare) +
              breaks = cuts, labels = c("0", "1", "2-3", "4-7", "8-57")) +
   tm_layout(legend.outside = TRUE, legend.outside.position = "right",
             main.title = "(c) Rare species richness, 2736 species",
+            main.title.fontface = "bold",
             main.title.size = 1, outer.margins = c(0, 0, 0, 0))
 richness_rare.tm + coastline.tm 
 figS6c <- richness_rare.tm + coastline.tm
@@ -809,6 +848,7 @@ prop_richness_rare.tm <- tm_shape(prop_richness_rare) +
              breaks = cuts, labels = c("< 1", "1-2", "3-5", "6-9", "10-81")) +
   tm_layout(legend.outside = TRUE, legend.outside.position = "right",
             main.title = "(c) Proportion of rare species, 2736 species",
+            main.title.fontface = "bold",
             main.title.size = 1, outer.margins = c(0, 0, 0, 0))
 prop_richness_rare.tm + coastline.tm 
 figS7c <- prop_richness_rare.tm + coastline.tm
@@ -825,6 +865,7 @@ weighted_rarity.tm <- tm_shape(weighted_rarity) +
              breaks = cuts, labels = c("0-0.2", "0.3-0.5", "0.6-0.7", "0.8-7.3")) +
   tm_layout(legend.outside = TRUE, legend.outside.position = "right",
             main.title = "(d) Species-weighted rarity, 5477 species",
+            main.title.fontface = "bold",
             main.title.size = 1, outer.margins = c(0, 0, 0, 0))
 weighted_rarity.tm + coastline.tm
 figS6d <- weighted_rarity.tm + coastline.tm
@@ -841,6 +882,7 @@ prop_weighted_rarity.tm <- tm_shape(prop_weighted_rarity) +
              breaks = cuts, labels = c("0-0.003", "0.004-0.005", "0.006-0.008", "0.009-0.1")) +
   tm_layout(legend.outside = TRUE, legend.outside.position = "right",
             main.title = "(d) Mean species-weighted rarity, 5477 species",
+            main.title.fontface = "bold",
             main.title.size = 1, outer.margins = c(0, 0, 0, 0))
 prop_weighted_rarity.tm + coastline.tm 
 figS7d <- prop_weighted_rarity.tm + coastline.tm
@@ -857,6 +899,7 @@ median_PD.tm <- tm_shape(median_PD) +
              breaks = cuts, labels = c("217-503", "504-2193", "2194-3082", "3083-3485", "3486-4689")) +
   tm_layout(legend.outside = TRUE, legend.outside.position = "right",
             main.title = "(e) Phylogenetic diversity, 5477 species",
+            main.title.fontface = "bold",
             main.title.size = 1, outer.margins = c(0, 0, 0, 0))
 median_PD.tm + coastline.tm 
 figS6e <- median_PD.tm + coastline.tm
@@ -873,6 +916,7 @@ median_threatened_PD.tm <- tm_shape(median_threatened_PD) +
              breaks = cuts, labels = c("0-217", "218-259", "260-455", "455-647", "648-820", "821-1793")) +
   tm_layout(legend.outside = TRUE, legend.outside.position = "right",
             main.title = "(f) Threatened phylogenetic diversity, 1193 species",
+            main.title.fontface = "bold",
             main.title.size = 1, outer.margins = c(0, 0, 0, 0))
 median_threatened_PD.tm + coastline.tm 
 figS6f <- median_threatened_PD.tm + coastline.tm
@@ -889,6 +933,7 @@ prop_median_threatened_PD.tm <- tm_shape(prop_median_threatened_PD) +
              breaks = cuts, labels = c("0-15", "16-57", "58-64", "65-68", "69-72", "73-100")) +
   tm_layout(legend.outside = TRUE, legend.outside.position = "right",
             main.title = "(f) Proportion of threatened phylogenetic diversity, 1193 species",
+            main.title.fontface = "bold",
             main.title.size = 1, outer.margins = c(0, 0, 0, 0))
 prop_median_threatened_PD.tm + coastline.tm 
 figS7f<- prop_median_threatened_PD.tm + coastline.tm
@@ -905,6 +950,7 @@ median_rare_PD.tm <- tm_shape(median_rare_PD) +
              breaks = cuts, labels = c("0-217", "218-245", "246-413", "414-586", "587-1523")) +
   tm_layout(legend.outside = TRUE, legend.outside.position = "right",
             main.title = "(g) Rare phylogenetic diversity, 2736 species",
+            main.title.fontface = "bold",
             main.title.size = 1, outer.margins = c(0, 0, 0, 0))
 median_rare_PD.tm + coastline.tm 
 figS6g <- median_rare_PD.tm + coastline.tm 
@@ -921,6 +967,7 @@ prop_median_rare_PD.tm <- tm_shape(prop_median_rare_PD) +
              breaks = cuts, labels = c("0-7.7", "7.8-13.1", "13.2-21.0", "21.1-28.1", "28.2-75.0")) +
   tm_layout(legend.outside = TRUE, legend.outside.position = "right",
             main.title = "(g) Proportion of rare phylogenetic diversity, 2736 species",
+            main.title.fontface = "bold",
             main.title.size = 1, outer.margins = c(0, 0, 0, 0))
 prop_median_rare_PD.tm + coastline.tm 
 figS7g <- prop_median_rare_PD.tm + coastline.tm 
@@ -937,6 +984,7 @@ median_PWR.tm <- tm_shape(median_PWR) +
              breaks = cuts, labels = c("0-0.017", "0.018-0.200", "0.200-3.560","3.561-5.170", "5.171-46.656")) +
   tm_layout(legend.outside = TRUE, legend.outside.position = "right",
             main.title = "(h) Phylogenetic-weighted rarity, 5477 species",
+            main.title.fontface = "bold",
             main.title.size = 1, outer.margins = c(0, 0, 0, 0))
 median_PWR.tm + coastline.tm
 figS6h <- median_PWR.tm + coastline.tm
@@ -953,19 +1001,30 @@ prop_median_PWR.tm <- tm_shape(prop_median_PWR) +
              breaks = cuts, labels = c("0-0.08", "0.09-0.13", "0.14-0.18","0.19-2.36")) +
   tm_layout(legend.outside = TRUE, legend.outside.position = "right",
             main.title = "(h) Mean phylogenetic-weighted rarity, 5477 species",
+            main.title.fontface = "bold",
             main.title.size = 1, outer.margins = c(0, 0, 0, 0))
 prop_median_PWR.tm + coastline.tm
 figS7h <- prop_median_PWR.tm + coastline.tm
 
 ## save Figure S6
 png(filename = paste0(getwd(), "/outputs/figS6.png"),
-    width = 17, height = 12, units = "cm", pointsize = 8, res = 600)
+    width = 17.5, height = 12, units = "cm", pointsize = 7, res = 600)
+multiplot(figS6a, figS6b, figS6c, figS6d, figS6e, figS6f, figS6g, figS6h, cols = 2)
+dev.off()
+
+pdf(file = paste0(getwd(), "/outputs/figS6.pdf"),
+    width = 8, height = 6, pointsize = 7)
 multiplot(figS6a, figS6b, figS6c, figS6d, figS6e, figS6f, figS6g, figS6h, cols = 2)
 dev.off()
 
 ## save Figure S7
 png(filename = paste0(getwd(), "/outputs/figS7.png"),
-    width = 17, height = 12, units = "cm", pointsize = 8, res = 600)
+    width = 17.5, height = 12, units = "cm", pointsize = 7, res = 600)
+multiplot(figS6a, figS7b, figS7c, figS7d, figS6e, figS7f, figS7g, figS7h, cols = 2)
+dev.off()
+
+pdf(file = paste0(getwd(), "/outputs/figS7.pdf"),
+    width = 8, height = 6, pointsize = 7)
 multiplot(figS6a, figS7b, figS7c, figS7d, figS6e, figS7f, figS7g, figS7h, cols = 2)
 dev.off()
 
@@ -985,7 +1044,8 @@ cellStats(ppa*GexpPD_hotspots, stat = "sum") /(0.025*51120) # percentage of the 
 GexpPD_hotspots.tm <- tm_shape(GexpPD_hotspots) +
   tm_raster(palette = "Dark2", alpha = 0.9, labels = "", title = "priority areas") +
   tm_layout(legend.outside = TRUE, legend.outside.position = "right", outer.margins = c(0, 0, 0, 0),
-            main.title = "(a) Protection coverage of priority areas", main.title.size = 1)
+            main.title = "(a) Protection coverage of priority areas", main.title.size = 1,
+            main.title.fontface = "bold")
 
 ppa.tm <- tm_shape(ppa) + 
   tm_raster (palette = "Purples", alpha = 0.6, style = "fixed", title = "% of area protected",
@@ -1012,7 +1072,8 @@ colors [1] <- rgb(217, 95, 2, max = 255)
 LexpPD_hotspots.tm <- tm_shape(LexpPD_hotspots) +
   tm_raster(palette = colors, alpha = 0.9, labels = "", title = "loss-significant areas") +
   tm_layout(legend.outside = TRUE, legend.outside.position = "right", outer.margins = c(0, 0, 0, 0),
-            main.title = "(b) Protection coverage of loss-significant areas", main.title.size = 1)
+            main.title = "(b) Protection coverage of loss-significant areas", main.title.size = 1,
+            main.title.fontface = "bold")
 
 LexpPD_hotspots.tm + ppa.tm + coastline.tm 
 
@@ -1020,6 +1081,11 @@ fig6b <- LexpPD_hotspots.tm + ppa.tm + coastline.tm
 
 png(filename = paste0(getwd(), "/outputs/fig6.png"),
     width = 13, height = 8, units = "cm", pointsize = 8, res = 600)
+multiplot(fig6a, fig6b, cols = 1)
+dev.off()
+
+pdf(file = paste0(getwd(), "/outputs/fig6.pdf"),
+    width = 5.1, height = 3.2, pointsize = 8)
 multiplot(fig6a, fig6b, cols = 1)
 dev.off()
 
@@ -1037,9 +1103,19 @@ png(filename = paste0(getwd(), "/outputs/figS1a.png"),
 corPlot(df = scores_all[, c(2, 4)], method = "spearman", digits = 2, ties.method =  "average") # Spearman correlation for HEDGE
 dev.off()
 
+pdf(file = paste0(getwd(), "/outputs/figS1a.pdf"),
+    width = 6.7, height = 4.7)
+corPlot(df = scores_all[, c(2, 4)], method = "spearman", digits = 2, ties.method =  "average") # Spearman correlation for HEDGE
+dev.off()
+
 png(filename = paste0(getwd(), "/outputs/figS1b.png"),
     width = 17, height = 12, units = "cm", res = 600)
 corPlot(df = scores_all[, c(3, 5)], method = "spearman", digits = 2, ties.method =  "average") # Spearman correlation for LEDGE
+dev.off()
+
+pdf(file = paste0(getwd(), "/outputs/figS1b.pdf"),
+    width = 6.7, height = 4.7)
+corPlot(df = scores_all[, c(3, 5)], method = "spearman", digits = 2, ties.method =  "average") # Spearman correlation for HEDGE
 dev.off()
 
   
@@ -1071,19 +1147,24 @@ give.n <- function(x)
 
 S3a <- ggplot(data = mammals, aes(y = log(hedge), x = Imputed.Status))
 S3a <- S3a + geom_boxplot() + xlab (label = "extinction risk") + ylab (label = "log(HEDGE) (Ma)") + 
-  ggtitle(label = "a) HEDGE scores by category of extinction risk") +
+  ggtitle(label = "(a) HEDGE scores by category of extinction risk") +
   stat_summary(fun.data = give.n, geom = "text", vjust = 0, size = 3) +
-  theme(plot.title = element_text(size = 8), axis.title.x = element_text(size = 8) , axis.title.y = element_text(size = 8))
+  theme(plot.title = element_text(size = 8, face = "bold"), axis.title.x = element_text(size = 8) , axis.title.y = element_text(size = 8))
 S3a
 
 S3b <- ggplot(data = mammals, aes(y = log(ledge), x = Imputed.Status))
 S3b <- S3b + geom_boxplot() + xlab (label = "extinction risk") + ylab (label = "log(LEDGE) (Ma)") + 
-  ggtitle(label = "b) LEDGE scores by category of extinction risk") +
+  ggtitle(label = "(b) LEDGE scores by category of extinction risk") +
   stat_summary(fun.data = give.n, geom = "text", vjust = 0, size = 3) +
-  theme(plot.title = element_text(size = 8), axis.title.x = element_text(size = 8) , axis.title.y = element_text(size = 8))
+  theme(plot.title = element_text(size = 8, face = "bold"), axis.title.x = element_text(size = 8) , axis.title.y = element_text(size = 8))
 S3b
 
 png(filename = paste0(getwd(), "/outputs/figS3.png"),
     width = 17, height = 10, units = "cm", pointsize = 8, res = 600)
+multiplot(S3a, S3b, cols = 2)
+dev.off()
+
+pdf(file = paste0(getwd(), "/outputs/figS3.pdf"),
+    width = 6.7, height = 4, pointsize = 8)
 multiplot(S3a, S3b, cols = 2)
 dev.off()
