@@ -42,5 +42,6 @@ vignettes/*.pdf
 # Specific to repository consmampd
 /requireddata/*
 /requiredoutputs/*
+/relatedoutputs/*
 *.Rproj
 /scripts/comparison phylacine and upham trees - paper Marine.R

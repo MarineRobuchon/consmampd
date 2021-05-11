@@ -97,13 +97,13 @@ plot <- ggplot(top10hedge, aes(x = species, y = hedge, fill = `Red List status`)
         legend.title = element_text(size = 9)) +
   scale_y_continuous(limits = c(0,85))
 
-gr_hedge <- list()
-for(i in 1:nrow(top10hedge)){
-  img <-  readPNG(top10hedge$images[i])
-  gr_hedge[[i]] <-   rasterGrob(img, interpolate=TRUE)
-  plot <-  plot +
-    annotation_custom(grob = gr_hedge[[i]], xmin = top10hedge$reverse[i]-.75, xmax = top10hedge$reverse[i]+.75, ymin = top10hedge$hedge[i]+0.5, ymax = top10hedge$hedge[i]+8)
-}
+# gr_hedge <- list()
+# for(i in 1:nrow(top10hedge)){
+#   img <-  readPNG(top10hedge$images[i])
+#   gr_hedge[[i]] <-   rasterGrob(img, interpolate=TRUE)
+#   plot <-  plot +
+#     annotation_custom(grob = gr_hedge[[i]], xmin = top10hedge$reverse[i]-.75, xmax = top10hedge$reverse[i]+.75, ymin = top10hedge$hedge[i]+0.5, ymax = top10hedge$hedge[i]+8)
+# }
 
 fig2a <- plot
 fig2a
@@ -135,13 +135,13 @@ plot <- ggplot(top10ledge, aes(x = species, y = ledge, fill = `Red List status`)
         legend.title = element_text(size = 9)) +
   scale_y_continuous(limits = c(0,85)) 
 
-gr_ledge <- list()
-for(i in 1:nrow(top10ledge)){
-  img <-  readPNG(top10ledge$images[i])
-  gr_ledge[[i]] <-   rasterGrob(img, interpolate=TRUE)
-  plot <-  plot +
-    annotation_custom(grob = gr_ledge[[i]], xmin = top10ledge$reverse[i]-.75, xmax = top10ledge$reverse[i]+.75, ymin = top10ledge$ledge[i]+0.5, ymax = top10ledge$ledge[i]+8)
-}
+# gr_ledge <- list()
+# for(i in 1:nrow(top10ledge)){
+#   img <-  readPNG(top10ledge$images[i])
+#   gr_ledge[[i]] <-   rasterGrob(img, interpolate=TRUE)
+#   plot <-  plot +
+#     annotation_custom(grob = gr_ledge[[i]], xmin = top10ledge$reverse[i]-.75, xmax = top10ledge$reverse[i]+.75, ymin = top10ledge$ledge[i]+0.5, ymax = top10ledge$ledge[i]+8)
+# }
 
 fig2b <- plot
 fig2b
@@ -286,8 +286,9 @@ gg_conservation_tophedge$conservation <- factor(gg_conservation_tophedge$conserv
                                                             "Land/water protection",
                                                             "Land/water management"))
 # format the table to count the number of species by conservation and introduced
-tab_conservation_tophedge <- gg_conservation_tophedge %>% count (conservation, introduced, 
+tab_conservation_tophedge <- gg_conservation_tophedge %>% count (conservation, 
                                                                  sort = TRUE)
+write.csv2(tab_conservation_tophedge, paste0(getwd(),"/outputs/tab_conservation_tophedge.csv"))
 # prepare the images
 hedge02 <- rasterGrob(readPNG(paste0(getwd(), "/images/top10hedge/hedge02.png")), interpolate = TRUE)
 # make the figure
@@ -331,8 +332,9 @@ gg_conservation_topledge$conservation <- factor(gg_conservation_topledge$conserv
                                                             "Land/water management",
                                                             "None" ))
 # format the table to count the number of species by conservation and introduced
-tab_conservation_topledge <- gg_conservation_topledge %>% count (conservation, introduced, 
+tab_conservation_topledge <- gg_conservation_topledge %>% count (conservation, 
                                                                  sort = TRUE)
+write.csv2(tab_conservation_topledge, paste0(getwd(),"/outputs/tab_conservation_topledge.csv"))
 # prepare the images
 ledge01 <- rasterGrob(readPNG(paste0(getwd(), "/images/top10ledge/ledge01.png")), interpolate = TRUE)
 # make the figure
@@ -1087,6 +1089,28 @@ dev.off()
 pdf(file = paste0(getwd(), "/outputs/fig6.pdf"),
     width = 5.1, height = 3.2, pointsize = 8)
 multiplot(fig6a, fig6b, cols = 1)
+dev.off()
+
+ap_visuel1 <- tm_shape(GexpPD_hotspots) +
+  tm_raster(palette = "Dark2", alpha = 0.9, labels = "") +
+  tm_layout(legend.show = FALSE, outer.margins = c(0, 0, 0, 0)) +
+  coastline.tm 
+ap_visuel1
+
+png(filename = paste0(getwd(), "/relatedoutputs/visuel1.png"),
+    width = 13, height = 8, units = "cm", pointsize = 8, res = 600)
+ap_visuel1
+dev.off()
+
+ap_visuel2 <- tm_shape(LexpPD_hotspots) +
+  tm_raster(palette = colors, alpha = 0.9, labels = "") +
+  tm_layout(legend.show = FALSE, outer.margins = c(0, 0, 0, 0)) +
+  coastline.tm 
+ap_visuel2
+
+png(filename = paste0(getwd(), "/relatedoutputs/visuel2.png"),
+    width = 13, height = 8, units = "cm", pointsize = 8, res = 600)
+ap_visuel2
 dev.off()
 
 ### Figure S1 - Correlations of species scores between the 2 phylogenies (PHYLACINE versus UPHAM) ----

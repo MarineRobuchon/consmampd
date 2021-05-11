@@ -66,6 +66,10 @@ This folder includes the following subfolders:
 -   introduced (folder containing transformed images of some species of
     interest that are also introduced).
 
+Please note that these images were used for a first version of the
+figures, but not all of them are used in the published version of the
+figures to comply with the licenses of the images.
+
 ### 1.3. requireddata (only on your computer)
 
 This folder contains data too heavy to be stored in the online github
@@ -186,24 +190,29 @@ not manage to generate them yourself. They include the following files:
     proportion of TOP 25% HEDGE species)
 -   Map\_mammals\_prop-richness-TOPLEDGE.grd, .gri (gridded map of the
     proportion of TOP 25% LEDGE species)
--   tableS1.csv (Table S1 of the paper)
+-   tab\_conservation\_tophedge.csv (Table underlying data shown in
+    Figure 5a)
+-   tab\_conservation\_topledge.csv (Table underlying data shown in
+    Figure 5b)
+-   tableS1.csv (Supplementary Data 1 of the paper)
 -   fig2.png, .pdf (Figure 2 of the paper)
--   figS5top.png, .pdf (Figure S5 of the paper - top part)
--   figS5bottom.png, .pdf (Figure S5 of the paper - bottom part)
--   tableS3.csv (Table S3 of the paper)
--   tableS4.csv (Table S4 of the paper)
--   tableS5.csv (Table S5 of the paper)
+-   figS5top.png, .pdf (Supplementary Figure 5 of the paper - top part)
+-   figS5bottom.png, .pdf (Supplementary Figure 5 of the paper - bottom
+    part)
+-   tableS3.csv (Supplementary Table 2 of the paper)
+-   tableS4.csv (Supplementary Data 2 of the paper)
+-   tableS5.csv (Supplementary Data 3 of the paper)
 -   fig5.png, .pdf (Figure 5 of the paper)
 -   fig3.png, .pdf (Figure 3 of the paper)
--   figS2.png, .pdf (Figure S2 of the paper)
+-   figS2.png, .pdf (Supplementary Figure 2 of the paper)
 -   fig4.png, .pdf (Figure 4 of the paper)
--   figS4.png, .pdf (Figure S4 of the paper)
--   tableS2.csv (Table S2 of the paper)
--   figS6.png, .pdf (Figure S6 of the paper)
--   figS7.png, .pdf (Figure S7 of the paper)
+-   figS4.png, .pdf (Supplementary Figure 4 of the paper)
+-   tableS2.csv (Supplementary Table 1 of the paper)
+-   figS6.png, .pdf (Supplementary Figure 6 of the paper)
+-   figS7.png, .pdf (Supplementary Figure 7 of the paper)
 -   fig6.png, .pdf (Figure 6 of the paper)
--   figS1.png, .pdf (Figure S1 of the paper)
--   figS3.png, .pdf (Figure S3 of the paper)
+-   figS1.png, .pdf (Supplementary Figure 1 of the paper)
+-   figS3.png, .pdf (Supplementary Figure 3 of the paper)
 
 ## 2. Requirements
 
