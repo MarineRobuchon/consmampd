@@ -481,9 +481,9 @@ median_GexpPD_p0.tm <- tm_shape(median_GexpPD_p0) +
   tm_raster (palette = colors, style = "fixed", title = "Evolutionary history (Ma)",
              breaks = cuts, labels = c("0-0.4", "0.5-5.4", "5.5-7.9", "8.0-12.0", "12.1-17.2", "17.3-78.4")) +
   tm_layout(legend.outside = TRUE, legend.outside.position = "right",
-            main.title = "(a) Gain in global expected phylogenetic diversity if all species present in the cell are saved from extinction",
+            main.title = "(a) Gain in global expected PD if all species present in the cell are saved from extinction",
             main.title.fontface = "bold",
-            main.title.size = 0.89, outer.margins = c(0, 0, 0, 0))
+            main.title.size = 1, outer.margins = c(0, 0, 0, 0))
 median_GexpPD_p0.tm + coastline.tm 
 fig4a <- median_GexpPD_p0.tm + coastline.tm 
 
@@ -498,9 +498,9 @@ median_LexpPD_p1.tm <- tm_shape(abs(median_LexpPD_p1)) +
   tm_raster (palette = colors, style = "fixed", title = "Evolutionary history (Ma)",
              breaks = cuts, labels = c("1.2-87.8", "87.9-105.6", "105.7-310.7", "310.8-532.9", "533.0-696.2", "696.3-1172.0")) +
   tm_layout(legend.outside = TRUE, legend.outside.position = "right",
-            main.title = "(b) Loss in global expected phylogenetic diversity if all species present in the cell become extinct",
+            main.title = "(b) Loss in global expected PD if all species present in the cell become extinct",
             main.title.fontface = "bold",
-            main.title.size = 0.89, outer.margins = c(0, 0, 0, 0))
+            main.title.size = 1, outer.margins = c(0, 0, 0, 0))
 median_LexpPD_p1.tm + coastline.tm 
 fig4b <- median_LexpPD_p1.tm + coastline.tm 
 
